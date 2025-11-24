@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.content.SharedPreferences;
 import java.util.HashSet;
 import java.util.Set;
@@ -181,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
         streakCount = 0;
         tvStreak.setText("연속 : 0");
 
-        // 3. 토스트 대신 피드백 텍스트로 안내
         tvFeedback.setText("순서를 섞어서 다시 시작합니다! 🔄");
         tvFeedback.setTextColor(Color.BLUE);
 
@@ -213,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
         Set<String> savedBookmarks = prefs.getStringSet("bookmarks", new HashSet<>());
         AssetManager assetManager = getAssets();
         try {
-            InputStream inputStream = assetManager.open("test.csv");
+            InputStream inputStream = assetManager.open("word.csv");
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             reader.readLine();
