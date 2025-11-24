@@ -12,7 +12,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import android.content.SharedPreferences;
+import java.util.HashSet;
+import java.util.Set;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean isAnswerRevealed = false;
     private int streakCount = 0;
     private Random random = new Random();
+    private SharedPreferences prefs;
+    private Set<String> excludedSet = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         btnBookmark = findViewById(R.id.btn_bookmark);
         btnExclude = findViewById(R.id.btn_exclude);
         switchMode = findViewById(R.id.switch_mode);
-
+        prefs = getSharedPreferences("MyWordApp", MODE_PRIVATE);
         readCsvFile();
         loadRandomQuestion();
 
@@ -88,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
         btnBookmark.setOnClickListener(v -> toggleBookmark());
         btnExclude.setOnClickListener(v -> excludeCurrentWord());
 
-        // ★ 다시 시작 버튼 클릭 시
         btnRestart.setOnClickListener(v -> resetGame());
 
         switchMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -192,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
         // 리스트에서 영구 삭제
         wordList.remove(currentItem);
         bookmarkedList.remove(currentItem);
-
+        saveData();
         // 다음 문제 로드
         loadRandomQuestion();
 
@@ -204,20 +207,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void readCsvFile() { //파일 읽어오기
+        wordList.clear();
+        bookmarkedList.clear();
+        excludedSet = new HashSet<>(prefs.getStringSet("excluded", new HashSet<>()));
+        Set<String> savedBookmarks = prefs.getStringSet("bookmarks", new HashSet<>());
         AssetManager assetManager = getAssets();
         try {
-            InputStream inputStream = assetManager.open("word.csv");
+            InputStream inputStream = assetManager.open("test.csv");
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             String line;
             reader.readLine();
             while ((line = reader.readLine()) != null) {
                 String[] tokens = line.split("\\|");
                 if (tokens.length >= 4) {
-                    wordList.add(new WordItem(tokens[0], tokens[1], tokens[2], tokens[3]));
+                    String wordName = tokens[1]; // 정답 단어 (고유 키로 사용)
+
+                    if (excludedSet.contains(wordName)) {
+                        continue;
+                    }
+                    WordItem item = new WordItem(tokens[0], wordName, tokens[2], tokens[3]);
+                    if (savedBookmarks.contains(wordName)) {
+                        item.setBookmarked(true);
+                        bookmarkedList.add(item);
+                    }
+
+                    wordList.add(item);
                 }
             }
-            // ★ 중요: 읽어온 후 섞기
+            // 남은 단어들만 섞기
             Collections.shuffle(wordList);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -233,6 +252,7 @@ public class MainActivity extends AppCompatActivity {
             bookmarkedList.remove(currentItem);
         }
         updateBookmarkIcon();
+        saveData();
     }
 
     private void updateBookmarkIcon() {
@@ -294,5 +314,21 @@ public class MainActivity extends AppCompatActivity {
             etAnswer.requestFocus();
             layoutCard.postDelayed(() -> layoutCard.setBackgroundResource(R.drawable.bg_border_purple), 500);
         }
+    }
+    private void saveData() {
+        SharedPreferences.Editor editor = prefs.edit();
+
+        // 1. 현재 즐겨찾기 목록을 Set<String>으로 변환
+        Set<String> bookmarkSet = new HashSet<>();
+        for (WordItem item : bookmarkedList) {
+            bookmarkSet.add(item.getWord());
+        }
+
+        // 2. 저장 (즐겨찾기 목록, 제외 목록)
+        editor.putStringSet("bookmarks", bookmarkSet);
+        editor.putStringSet("excluded", excludedSet);
+
+        // 3. 완료
+        editor.apply();
     }
 }

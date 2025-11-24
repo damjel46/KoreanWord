@@ -10,9 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-
         android:gravity="center"
-
         android:paddingStart="20dp"
         android:paddingEnd="20dp"
         android:paddingTop="20dp"
@@ -90,25 +88,51 @@
                     android:layout_marginHorizontal="10dp"
                     android:layout_marginBottom="20dp"/>
 
-                <EditText
-                    android:id="@+id/et_answer"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="정답을 입력하세요"
-                    android:inputType="text"
-                    android:imeOptions="actionDone"
-                    android:singleLine="true"
-                    android:gravity="center"
-                    android:background="@null"
-                    android:padding="10dp"
-                    android:textSize="18sp"
-                    android:layout_marginHorizontal="20dp"/>
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="20dp">
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#CCCCCC"
-                    android:layout_marginHorizontal="20dp"/>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <EditText
+                            android:id="@+id/et_answer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="정답 입력"
+                            android:inputType="text"
+                            android:imeOptions="actionDone"
+                            android:singleLine="true"
+                            android:gravity="center_horizontal"
+                            android:background="@null"
+                            android:padding="10dp"
+                            android:textSize="18sp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="2dp"
+                            android:background="#CCCCCC"/>
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_submit"
+                        android:layout_width="50dp"
+                        android:layout_height="38dp"
+                        android:layout_marginStart="10dp"
+                        android:backgroundTint="#6200EE"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="제출"
+                        android:textSize="13sp" />
+                </LinearLayout>
+
             </LinearLayout>
 
             <ImageButton
@@ -153,36 +177,29 @@
             android:orientation="vertical"
             android:gravity="center">
 
-            <Button
-                android:id="@+id/btn_reveal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="정답 보기"
-                android:backgroundTint="#FF6F61"
-                android:layout_marginBottom="10dp"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:gravity="center">
+                android:gravity="center"
+                android:layout_marginHorizontal="50dp">
 
                 <Button
                     android:id="@+id/btn_hint"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="힌트(예문)"
+                    android:text="힌트"
                     android:backgroundTint="#6200EE"
                     android:layout_marginEnd="5dp"/>
 
                 <Button
-                    android:id="@+id/btn_submit"
+                    android:id="@+id/btn_reveal"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="제출"
-                    android:backgroundTint="#6200EE"
+                    android:text="정답"
+                    android:backgroundTint="#FF6F61"
                     android:layout_marginStart="5dp"/>
             </LinearLayout>
 
