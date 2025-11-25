@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="#FAFAFA">
+    android:background="@color/bg_main">
 
     <LinearLayout
         android:id="@+id/container_content"
@@ -23,7 +24,8 @@
             android:text="⭐ 학습하기"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginBottom="10dp"/>
+            android:textColor="@color/text_primary"
+            android:layout_marginBottom="10dp" />
 
         <TextView
             android:id="@+id/tv_streak"
@@ -33,8 +35,8 @@
             android:gravity="center"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#FF9800"
-            android:layout_marginBottom="10dp"/>
+            android:textColor="@color/color_accent"
+            android:layout_marginBottom="10dp" />
 
         <FrameLayout
             android:id="@+id/layout_card"
@@ -58,9 +60,9 @@
                     android:text="초 성"
                     android:textSize="40sp"
                     android:textStyle="bold"
-                    android:textColor="#6200EE"
+                    android:textColor="@color/color_primary"
                     android:layout_marginTop="30dp"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="10dp" />
 
                 <TextView
                     android:id="@+id/tv_mean"
@@ -68,10 +70,10 @@
                     android:layout_height="wrap_content"
                     android:text="뜻 설명"
                     android:textSize="16sp"
-                    android:textColor="#555555"
+                    android:textColor="@color/text_secondary"
                     android:gravity="center"
                     android:layout_marginHorizontal="20dp"
-                    android:layout_marginBottom="20dp"/>
+                    android:layout_marginBottom="20dp" />
 
                 <TextView
                     android:id="@+id/tv_example"
@@ -80,13 +82,13 @@
                     android:text="예문"
                     android:textSize="18sp"
                     android:textStyle="bold"
-                    android:textColor="#333333"
-                    android:background="#F5F5F5"
+                    android:textColor="@color/text_primary"
+                    android:background="#22888888"
                     android:padding="15dp"
                     android:visibility="gone"
                     android:gravity="center"
                     android:layout_marginHorizontal="10dp"
-                    android:layout_marginBottom="20dp"/>
+                    android:layout_marginBottom="20dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -112,25 +114,28 @@
                             android:gravity="center_horizontal"
                             android:background="@null"
                             android:padding="10dp"
-                            android:textSize="18sp"/>
+                            android:textSize="18sp"
+                            android:textColor="@color/text_primary"
+                            android:textColorHint="@color/text_hint" />
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="2dp"
-                            android:background="#CCCCCC"/>
+                            android:background="@color/text_secondary" />
                     </LinearLayout>
 
                     <Button
                         android:id="@+id/btn_submit"
                         android:layout_width="50dp"
-                        android:layout_height="38dp"
-                        android:layout_marginStart="10dp"
-                        android:backgroundTint="#6200EE"
+                        android:layout_height="50dp"
+                        android:text="제출"
+                        android:textSize="13sp"
+                        android:padding="0dp"
                         android:insetTop="0dp"
                         android:insetBottom="0dp"
-                        android:padding="0dp"
-                        android:text="제출"
-                        android:textSize="13sp" />
+                        android:backgroundTint="@color/btn_bg_hint"
+                        android:textColor="@color/card_bg"
+                        android:layout_marginStart="10dp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -145,7 +150,8 @@
                 android:scaleType="fitCenter"
                 android:layout_gravity="top|left"
                 android:layout_marginTop="5dp"
-                android:layout_marginLeft="5dp"/>
+                android:layout_marginLeft="5dp"
+                app:tint="@color/feedback_pass" />
 
             <ImageButton
                 android:id="@+id/btn_bookmark"
@@ -157,64 +163,65 @@
                 android:scaleType="fitCenter"
                 android:layout_gravity="top|right"
                 android:layout_marginTop="5dp"
-                android:layout_marginRight="5dp"/>
-        </FrameLayout>
+                android:layout_marginRight="5dp"
+                app:tint="@color/color_accent" /> </FrameLayout>
 
-        <TextView
-            android:id="@+id/tv_feedback"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="#E91E63"
-            android:layout_marginBottom="10dp"
-            android:gravity="center"/>
+    <TextView
+        android:id="@+id/tv_feedback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/feedback_error"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginHorizontal="50dp">
-
-                <Button
-                    android:id="@+id/btn_hint"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="힌트"
-                    android:backgroundTint="#6200EE"
-                    android:layout_marginEnd="5dp"/>
-
-                <Button
-                    android:id="@+id/btn_reveal"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:text="정답"
-                    android:backgroundTint="#FF6F61"
-                    android:layout_marginStart="5dp"/>
-            </LinearLayout>
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginHorizontal="50dp">
 
             <Button
-                android:id="@+id/btn_restart"
-                android:layout_width="match_parent"
+                android:id="@+id/btn_hint"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:text="🔄 처음부터 다시 시작"
-                android:backgroundTint="#009688"
-                android:textSize="16sp"
-                android:padding="15dp"
-                android:visibility="gone"
-                android:layout_marginTop="20dp"/>
+                android:text="힌트"
+                android:backgroundTint="@color/btn_bg_hint"
+                android:textColor="@color/card_bg"
+                android:layout_marginEnd="5dp"/>
 
+            <Button
+                android:id="@+id/btn_reveal"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="정답"
+                android:backgroundTint="@color/btn_bg_reveal"
+                android:textColor="@color/card_bg"
+                android:layout_marginStart="5dp"/>
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btn_restart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="🔄 처음부터 다시 시작"
+            android:backgroundTint="@color/btn_bg_restart"
+            android:textColor="@color/card_bg"
+            android:textSize="16sp"
+            android:padding="15dp"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"/>
     </LinearLayout>
+</LinearLayout>
 </ScrollView>
