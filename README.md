@@ -97,3 +97,69 @@ values-night/colors.xml을 활용한 자동 색상 전환 시스템 구축.
 Material Design 가이드라인을 준수한 버튼 및 레이아웃 간격(Padding/Margin) 조정.
 
 화면 중앙 정렬 및 시선 처리를 고려한 요소 배치 수정 (하단 여백 활용).
+📅 2025-11-30: 데이터 영구 저장(Persistence) 구현
+SharedPreferences 도입:
+
+앱 종료 후에도 데이터가 유지되도록 저장소 연동.
+
+제외된 단어(Excluded): Set<String> 형태로 저장하여 앱 재실행 시 해당 단어가 로드되지 않도록 필터링 로직 구현.
+
+즐겨찾기(Bookmarks): 즐겨찾기 상태를 저장하여 재실행 시에도 별표(⭐)가 유지되도록 구현.
+
+로직 최적화: readCsvFile 시 저장된 데이터를 대조하여 리스트를 구성하도록 수정.
+
+📅 2025-12-01: 다크 모드(Dark Mode) 및 UI 고도화
+테마 시스템 구축:
+
+res/values/colors.xml (라이트 모드)와 res/values-night/colors.xml (다크 모드) 분리.
+
+하드코딩된 색상 코드를 모두 제거하고 @color/resource_name 형태로 리팩토링.
+
+다크 모드 시 눈의 피로를 줄이는 파스텔 톤(Pastel Tone) 컬러 팔레트 적용.
+
+UI 레이아웃 개선:
+
+제출 버튼: 직관적인 정사각형 형태로 변경 및 입력창 우측 배치.
+
+하단 버튼: 힌트/정답 버튼의 너비를 조절(2/3 사이즈)하여 심미성 확보.
+
+피드백 메시지: 시선 처리를 위해 카드 상단(연속 정답 위치)으로 재배치.
+
+📅 2025-12-02: 앱 구조 개편 (Navigation & Home)
+HomeActivity 생성:
+
+앱의 진입점(Launcher)을 MainActivity에서 HomeActivity로 변경.
+
+그룹별 학습: 초성 그룹(ㄱ-ㅁ, ㅂ-ㅊ, ㅋ-ㅎ)을 선택하여 학습하는 기능 추가.
+
+모드 선택: '전체 랜덤 풀기'와 '즐겨찾기만 학습' 버튼 구현.
+
+MainActivity 리팩토링:
+
+기존의 모드 스위치(Switch)를 제거하고 Intent로 전달받은 모드(isBookmarkMode, selectedGroup)에 따라 데이터를 로드하도록 변경.
+
+좌상단 뒤로가기(Back) 버튼 추가.
+
+최고 기록 시스템:
+
+연속 정답(Streak) 최고 기록을 저장하고 홈 화면에 "내 최고 연속 점수" 표시.
+
+📅 2025-12-03: 버그 수정 및 디테일 잡기
+피드백 타이밍 수정: 정답 시 "정답입니다!" 메시지가 뜨기 전에 다음 문제가 로드되어 메시지가 씹히는 현상 수정 (순서 변경 및 postDelayed 적용).
+
+레이아웃 위치 조정: paddingBottom을 활용하여 전체 UI를 화면 중앙보다 살짝 상단(2/5 지점)에 위치하도록 조정 (시각적 안정감 확보).
+
+XML 속성 오류 수정: app:tint 등을 android:tint로 변경하여 빌드 워닝 해결.
+
+📅 2025-12-04: 수익화(Monetization) - AdMob 연동
+Google AdMob 통합:
+
+play-services-ads 라이브러리 추가 및 매니페스트 설정.
+
+레이아웃 변경: ScrollView 루트를 RelativeLayout으로 변경하여 광고 영역 확보.
+
+배너 배치:
+
+상단: 기본 배너(BANNER) 배치 및 상태바 간섭 방지(marginTop).
+
+하단: 수익성 증대를 위한 대형 배너(LARGE_BANNER) 적용.
