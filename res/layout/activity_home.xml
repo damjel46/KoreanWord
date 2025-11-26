@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/bg_main"
+    android:padding="30dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="문해력 테스트"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="10dp"/>
+
+    <TextView
+        android:id="@+id/tv_best_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="내 최고 연속 점수 : 0"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_accent"
+        android:layout_marginBottom="30dp"/>
+
+     <Button
+    android:id="@+id/btn_group1"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:text="ㄱ ㄴ ㄷ ㄹ ㅁ"
+    android:textSize="24sp"
+    android:textStyle="bold"
+    android:backgroundTint="@color/btn_bg_hint"
+    android:textColor="@color/card_bg"
+    android:layout_marginBottom="15dp"/>
+
+    <Button
+        android:id="@+id/btn_group2"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="ㅂ ㅅ ㅇ ㅈ ㅊ"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/btn_bg_reveal"
+        android:textColor="@color/card_bg"
+        android:layout_marginBottom="15dp"/>
+
+    <Button
+        android:id="@+id/btn_group3"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="ㅋ ㅌ ㅍ ㅎ"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/purple_500"
+        android:textColor="@color/card_bg"
+        android:layout_marginBottom="15dp"/>
+    <Button
+        android:id="@+id/btn_random_all"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="🎲 전체 랜덤 풀기"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/btn_bg_restart"
+        android:textColor="@color/card_bg"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:id="@+id/btn_only_bookmark"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="⭐ 즐겨찾기만 학습"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/color_accent"
+        android:textColor="@color/card_bg"
+        android:layout_marginBottom="30dp"/>
+
+</LinearLayout>
