@@ -149,8 +149,6 @@ MainActivity 리팩토링:
 
 레이아웃 위치 조정: paddingBottom을 활용하여 전체 UI를 화면 중앙보다 살짝 상단(2/5 지점)에 위치하도록 조정 (시각적 안정감 확보).
 
-XML 속성 오류 수정: app:tint 등을 android:tint로 변경하여 빌드 워닝 해결.
-
 📅 2025-12-04: 수익화(Monetization) - AdMob 연동
 Google AdMob 통합:
 
