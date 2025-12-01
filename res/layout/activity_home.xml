@@ -27,15 +27,15 @@
         android:layout_marginBottom="30dp"/>
 
      <Button
-    android:id="@+id/btn_group1"
-    android:layout_width="match_parent"
-    android:layout_height="70dp"
-    android:text="ㄱ ㄴ ㄷ ㄹ ㅁ"
-    android:textSize="24sp"
-    android:textStyle="bold"
-    android:backgroundTint="@color/btn_bg_hint"
-    android:textColor="@color/card_bg"
-    android:layout_marginBottom="15dp"/>
+        android:id="@+id/btn_group1"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="ㄱ ㄴ ㄷ ㄹ ㅁ"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/btn_bg_hint"
+        android:textColor="@color/card_bg"
+        android:layout_marginBottom="15dp"/>
 
     <Button
         android:id="@+id/btn_group2"
@@ -57,7 +57,18 @@
         android:textStyle="bold"
         android:backgroundTint="@color/purple_500"
         android:textColor="@color/card_bg"
-        android:layout_marginBottom="15dp"/>
+        android:layout_marginBottom="30dp"/>
+    <Button
+        android:id="@+id/btn_trash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🗑️ 제외된 단어 관리 (휴지통)"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_secondary"
+        android:background="@android:color/transparent"
+        android:layout_marginBottom="20dp"/>
+
     <Button
         android:id="@+id/btn_random_all"
         android:layout_width="match_parent"
