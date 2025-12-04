@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_main">
+
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adViewTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="40dp"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-5497677824149260/4874446941"/>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/adViewTop"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/container_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:paddingBottom="200dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp">
+
+                <Button
+                    android:id="@+id/btn_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="◀ 뒤로가기"
+                    android:textColor="@color/text_secondary"
+                    android:background="@android:color/transparent"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:padding="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/tv_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1 / 30"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_primary"
+                    android:layout_centerInParent="true"/>
+
+                <TextView
+                    android:id="@+id/tv_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#F44336"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_feedback"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/feedback_error"
+                android:layout_marginBottom="2dp"
+                android:gravity="center"/>
+
+            <FrameLayout
+                android:id="@+id/layout_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_border_purple"
+                android:elevation="4dp"
+                android:paddingBottom="20dp"
+                android:layout_marginBottom="10dp">
+
+                <TextView
+                    android:id="@+id/tv_streak"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="연속 : 0"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/color_accent"
+                    android:layout_gravity="top|center_horizontal"
+                    android:layout_marginTop="15dp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_initial"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="초 성"
+                        android:textSize="40sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/color_primary"
+                        android:layout_marginTop="50dp"
+                        android:layout_marginBottom="10dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_mean"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="뜻 설명"
+                        android:textSize="16sp"
+                        android:textColor="@color/text_secondary"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="20dp"
+                        android:layout_marginBottom="20dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_example"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="예문"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_primary"
+                        android:background="#22888888"
+                        android:padding="15dp"
+                        android:visibility="gone"
+                        android:gravity="center"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginBottom="20dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginHorizontal="20dp">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/et_answer"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="정답 입력"
+                                android:inputType="text"
+                                android:imeOptions="actionDone"
+                                android:singleLine="true"
+                                android:gravity="center_horizontal"
+                                android:background="@null"
+                                android:padding="10dp"
+                                android:textSize="18sp"
+                                android:textColor="@color/text_primary"
+                                android:textColorHint="@color/text_hint"/>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="2dp"
+                                android:background="@color/text_secondary"/>
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/btn_submit"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:text="제출"
+                            android:textSize="13sp"
+                            android:padding="0dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:backgroundTint="@color/btn_bg_hint"
+                            android:textColor="@color/card_bg"
+                            android:layout_marginStart="10dp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/btn_exclude"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_remove"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="12dp"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="top|left"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:tint="@color/feedback_pass"/>
+
+                <ImageButton
+                    android:id="@+id/btn_bookmark"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_star_border"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:padding="12dp"
+                    android:scaleType="fitCenter"
+                    android:layout_gravity="top|right"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="5dp"
+                    android:tint="@color/color_accent"/>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="50dp">
+
+                    <Button
+                        android:id="@+id/btn_hint"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="힌트"
+                        android:backgroundTint="@color/btn_bg_hint"
+                        android:textColor="@color/card_bg"
+                        android:layout_marginEnd="5dp"/>
+
+                    <Button
+                        android:id="@+id/btn_reveal"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:text="정답"
+                        android:backgroundTint="@color/btn_bg_reveal"
+                        android:textColor="@color/card_bg"
+                        android:layout_marginStart="5dp"/>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/btn_restart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="🔄 처음부터 다시 시작"
+                    android:backgroundTint="@color/btn_bg_restart"
+                    android:textColor="@color/card_bg"
+                    android:textSize="16sp"
+                    android:padding="15dp"
+                    android:visibility="gone"
+                    android:layout_marginTop="20dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

@@ -15,18 +15,25 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity android:name=".TrashActivity" />
+        <activity android:name=".TimeAttackActivity" />
         <activity
         android:name=".HomeActivity"
         android:exported="true">
+
+
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
-
+        <meta-data
+            android:name="com.google.android.gms.games.624009668474-n1fj637hid6h9aarhopvkogpn7bfpr30.apps.googleusercontent.com"
+            android:value="@string/game_services_project_id" />
     </activity>
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-5497677824149260~4871395755"/>
+
     </application>
 
 </manifest>
