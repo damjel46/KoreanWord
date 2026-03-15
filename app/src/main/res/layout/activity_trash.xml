@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/bg_main"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="20dp">
+
+        <Button
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="◀"
+            android:textSize="18sp"
+            android:textColor="@color/text_primary"
+            android:background="@android:color/transparent"
+            android:minWidth="0dp"
+            android:padding="10dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="휴지통"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:layout_marginStart="10dp"/>
+
+        <Button
+            android:id="@+id/btn_restore_all"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="전체 복구"
+            android:textSize="12sp"
+            android:backgroundTint="@color/btn_bg_reveal"
+            android:textColor="@color/card_bg"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="휴지통이 비었습니다."
+        android:gravity="center"
+        android:textSize="18sp"
+        android:textColor="@color/text_hint"
+        android:visibility="gone"/>
+
+    <ListView
+        android:id="@+id/list_trash"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10dp"/>
+
+    <Button
+        android:id="@+id/btn_restore_selected"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="선택한 항목 복구하기"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/color_accent"
+        android:textColor="@color/card_bg"
+        android:layout_marginTop="10dp"
+        android:visibility="gone"/> </LinearLayout>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/bg_main"
+    android:padding="20dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="70dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="문해력 퀴즈"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary"
+            android:layout_centerInParent="true"/>
+
+        <ImageButton
+            android:id="@+id/btn_ranking"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_my_calendar"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="fitCenter"
+            android:padding="8dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:tooltipText="랭킹 보기"
+            app:tint="@color/color_accent"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_best_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="연속 정답 기록 : 0"
+        android:textSize="14sp"
+        android:textColor="@color/color_accent"
+        android:layout_marginBottom="20dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:baselineAligned="false">
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="5dp">
+
+            <Button
+                android:id="@+id/btn_challenge_1min"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:text="⚡ 1분 도전"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#FFB74D"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:cornerRadius="16dp"/>
+
+            <TextView
+                android:id="@+id/tv_best_1min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Best: 0"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#FFB74D"
+                android:background="#FFFFFF"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="8dp"
+                android:elevation="2dp"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="5dp">
+
+            <Button
+                android:id="@+id/btn_challenge_3min"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:text="🔥 3분 도전"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#FF6F61"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                app:cornerRadius="16dp"/>
+
+            <TextView
+                android:id="@+id/tv_best_3min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Best: 0"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="#FF6F61"
+                android:background="#FFFFFF"
+                android:paddingHorizontal="6dp"
+                android:paddingVertical="2dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="8dp"
+                android:elevation="2dp"/>
+        </FrameLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn_group1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/btn_bg_hint"
+            android:text="ㄱ ㄴ ㄷ ㄹ ㅁ"
+            android:textColor="@color/card_bg"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_group2"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/btn_bg_reveal"
+            android:text="ㅂ ㅅ ㅇ ㅈ ㅊ"
+            android:textColor="@color/card_bg"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_group3"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="10dp"
+            android:backgroundTint="@color/purple_500"
+            android:text="ㅋ ㅌ ㅍ ㅎ"
+            android:textColor="@color/card_bg"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_random_all"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/btn_bg_restart"
+            android:text="🎲 전체 랜덤 풀기"
+            android:textColor="@color/card_bg"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp">
+
+        <ImageButton
+            android:id="@+id/btn_only_bookmark"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_star_filled"
+            android:background="@drawable/bg_border_purple"
+            android:backgroundTint="@color/card_bg"
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="20dp"
+            android:tooltipText="즐겨찾기 학습"/>
+
+        <ImageButton
+            android:id="@+id/btn_trash"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_remove"
+            android:background="@drawable/bg_border_purple"
+            android:backgroundTint="@color/card_bg"
+            android:padding="15dp"
+            android:scaleType="fitCenter"
+            android:tooltipText="휴지통"/>
+    </LinearLayout>
+
+</LinearLayout>
