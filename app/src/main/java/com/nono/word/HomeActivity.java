@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.android.gms.games.PlayGames;
 import com.google.android.gms.games.PlayGamesSdk;
@@ -86,17 +87,10 @@ public class HomeActivity extends AppCompatActivity {
         // 즐겨찾기만
         btnOnlyBookmark.setOnClickListener(v -> startMainActivity(0, true));
         // 1분 챌린지
-        btnChallenge1Min.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, TimeAttackActivity.class);
-            intent.putExtra("TIME_LIMIT", Constants.TIME_LIMIT_1MIN);
-            startActivity(intent);
-        });
+        btnChallenge1Min.setOnClickListener(v -> showChallengeConfirmDialog(Constants.TIME_LIMIT_1MIN));
+
         // 3분 챌린지
-        btnChallenge3Min.setOnClickListener(v -> {
-            Intent intent = new Intent(HomeActivity.this, TimeAttackActivity.class);
-            intent.putExtra("TIME_LIMIT", Constants.TIME_LIMIT_3MIN);
-            startActivity(intent);
-        });
+        btnChallenge3Min.setOnClickListener(v -> showChallengeConfirmDialog(Constants.TIME_LIMIT_3MIN));
 
         // 휴지통
         btnTrash.setOnClickListener(v -> {
@@ -131,5 +125,27 @@ public class HomeActivity extends AppCompatActivity {
         intent.putExtra("selected_group", groupNumber);
         intent.putExtra("bookmark_mode", isBookmarkMode);
         startActivity(intent);
+    }
+
+    private void showChallengeConfirmDialog(long timeLimit) {
+        String dialogTitle;
+        if (timeLimit == Constants.TIME_LIMIT_1MIN) {
+            dialogTitle = "1분 챌린지";
+        } else {
+            dialogTitle = "3분 챌린지";
+        }
+
+        new AlertDialog.Builder(this)
+                .setTitle(dialogTitle)
+                .setMessage("⚠️ 챌린지 모드는 정답이 나오지 않습니다.\n\n공부 모드에서 충분히 학습한 후\n도전하세요!")
+                .setPositiveButton("예, 시작할게요", (dialog, which) -> {
+                    Intent intent = new Intent(HomeActivity.this, TimeAttackActivity.class);
+                    intent.putExtra("TIME_LIMIT", timeLimit);
+                    startActivity(intent);
+                })
+                .setNegativeButton("아니오, 취소", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
     }
 }
