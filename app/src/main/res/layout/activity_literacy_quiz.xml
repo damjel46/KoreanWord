@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F6F6F8">
+
+    <!-- 광고 배너 -->
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adViewTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-5497677824149260/4874446941"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp">
+
+            <!-- 헤더 바 -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp">
+
+                <Button
+                    android:id="@+id/btn_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="✕ 나가기"
+                    android:textSize="13sp"
+                    android:textColor="#64748B"
+                    android:background="@android:color/transparent"
+                    android:padding="0dp"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"/>
+
+                <TextView
+                    android:id="@+id/tv_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1 / 20"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#1E293B"
+                    android:layout_centerInParent="true"/>
+
+                <TextView
+                    android:id="@+id/tv_score"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0점"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#5211D4"
+                    android:background="@drawable/bg_score_badge"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"/>
+            </RelativeLayout>
+
+            <!-- 피드백 텍스트 -->
+            <TextView
+                android:id="@+id/tv_feedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#EF4444"
+                android:gravity="center"
+                android:layout_marginBottom="4dp"
+                android:minHeight="20dp"/>
+
+            <!-- 퀴즈 카드 -->
+            <FrameLayout
+                android:id="@+id/layout_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_quiz_card"
+                android:elevation="4dp"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal">
+
+                    <!-- 보라색 상단 강조 바 -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="#5211D4"/>
+
+                    <!-- 질문 텍스트 -->
+                    <TextView
+                        android:id="@+id/tv_question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="질문"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        android:textColor="#1E293B"
+                        android:gravity="center"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <!-- 지문 (passage, 없으면 GONE) -->
+                    <TextView
+                        android:id="@+id/tv_passage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textSize="14sp"
+                        android:textColor="#475569"
+                        android:fontFamily="serif"
+                        android:textStyle="italic"
+                        android:background="#F8F9FA"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:gravity="center"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="12dp"
+                        android:visibility="gone"/>
+
+                    <!-- 4지선다 보기 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="20dp">
+
+                        <Button
+                            android:id="@+id/btn_choice1"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:text="① 보기1"
+                            android:textSize="14sp"
+                            android:textColor="#334155"
+                            android:background="@drawable/bg_choice_btn"
+                            android:backgroundTint="@null"
+                            android:gravity="center_vertical|start"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:stateListAnimator="@null"
+                            android:layout_marginBottom="8dp"
+                            android:textAllCaps="false"/>
+
+                        <Button
+                            android:id="@+id/btn_choice2"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:text="② 보기2"
+                            android:textSize="14sp"
+                            android:textColor="#334155"
+                            android:background="@drawable/bg_choice_btn"
+                            android:backgroundTint="@null"
+                            android:gravity="center_vertical|start"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:stateListAnimator="@null"
+                            android:layout_marginBottom="8dp"
+                            android:textAllCaps="false"/>
+
+                        <Button
+                            android:id="@+id/btn_choice3"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:text="③ 보기3"
+                            android:textSize="14sp"
+                            android:textColor="#334155"
+                            android:background="@drawable/bg_choice_btn"
+                            android:backgroundTint="@null"
+                            android:gravity="center_vertical|start"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:stateListAnimator="@null"
+                            android:layout_marginBottom="8dp"
+                            android:textAllCaps="false"/>
+
+                        <Button
+                            android:id="@+id/btn_choice4"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:text="④ 보기4"
+                            android:textSize="14sp"
+                            android:textColor="#334155"
+                            android:background="@drawable/bg_choice_btn"
+                            android:backgroundTint="@null"
+                            android:gravity="center_vertical|start"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:stateListAnimator="@null"
+                            android:textAllCaps="false"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- 다음 문제 버튼 -->
+            <Button
+                android:id="@+id/btn_next"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="다음 문제 ▶"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/bg_next_btn"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:stateListAnimator="@null"
+                android:visibility="gone"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- 다시 도전 버튼 (결과 화면) -->
+            <Button
+                android:id="@+id/btn_restart"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="🔄 다시 도전하기"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/bg_category_icon_teal"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:stateListAnimator="@null"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

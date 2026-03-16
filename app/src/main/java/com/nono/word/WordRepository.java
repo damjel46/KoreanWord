@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -92,5 +95,48 @@ public class WordRepository {
 
     public void saveChallengeScore(long timeLimit, int score) {
         prefs.edit().putInt(Constants.KEY_CHALLENGE_SCORE_PREFIX + timeLimit, score).apply();
+    }
+
+    // ── 문해력 테스트 ──────────────────────────────────────────
+
+    public List<LiteracyItem> loadLiteracyQuestions(Context context) {
+        List<LiteracyItem> list = new ArrayList<>();
+        try {
+            InputStream is = context.getAssets().open("literacy.json");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) sb.append(line);
+            reader.close();
+
+            JSONArray arr = new JSONArray(sb.toString());
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject obj = arr.getJSONObject(i);
+                JSONArray choicesArr = obj.getJSONArray("choices");
+                String[] choices = new String[choicesArr.length()];
+                for (int j = 0; j < choicesArr.length(); j++) {
+                    choices[j] = choicesArr.getString(j);
+                }
+                list.add(new LiteracyItem(
+                        obj.getInt("id"),
+                        obj.getString("category"),
+                        obj.getString("question"),
+                        obj.optString("passage", ""),
+                        choices,
+                        obj.getInt("correctIndex")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public int getLiteracyBestScore() {
+        return prefs.getInt(Constants.KEY_LITERACY_BEST_SCORE, 0);
+    }
+
+    public void saveLiteracyBestScore(int score) {
+        prefs.edit().putInt(Constants.KEY_LITERACY_BEST_SCORE, score).apply();
     }
 }

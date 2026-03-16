@@ -254,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
         etAnswer.setText("");
         tvFeedback.setText("");
         tvFeedback.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
-        layoutCard.setBackgroundResource(R.drawable.bg_border_purple);
+        layoutCard.setBackgroundResource(R.drawable.bg_quiz_card);
     }
 
     private void checkAnswer() {
@@ -302,10 +302,10 @@ public class MainActivity extends AppCompatActivity {
 
             Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
             layoutCard.startAnimation(shake);
-            layoutCard.setBackgroundResource(R.drawable.bg_border_red);
+            layoutCard.setBackgroundResource(R.drawable.bg_quiz_card_error);
             etAnswer.setText("");
             etAnswer.requestFocus();
-            layoutCard.postDelayed(() -> layoutCard.setBackgroundResource(R.drawable.bg_border_purple), 500);
+            layoutCard.postDelayed(() -> layoutCard.setBackgroundResource(R.drawable.bg_quiz_card), 500);
         }
     }
 

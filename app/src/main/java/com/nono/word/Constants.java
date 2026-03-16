@@ -17,4 +17,8 @@ public final class Constants {
     // 타임어택 시간 제한
     static final long TIME_LIMIT_1MIN = 60_000L;
     static final long TIME_LIMIT_3MIN = 180_000L;
+
+    // 문해력 테스트
+    static final String KEY_LITERACY_BEST_SCORE = "literacyBestScore";
+    static final int LITERACY_QUIZ_COUNT = 20;
 }

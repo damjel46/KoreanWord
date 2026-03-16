@@ -1,96 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_main">
+    android:orientation="vertical"
+    android:background="#F6F6F8">
 
+    <!-- 광고 배너 -->
     <com.google.android.gms.ads.AdView
         android:id="@+id/adViewTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="40dp"
+        android:layout_gravity="center_horizontal"
         ads:adSize="BANNER"
         ads:adUnitId="ca-app-pub-5497677824149260/4874446941"/>
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/adViewTop"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:gravity="center"
-            android:paddingStart="20dp"
-            android:paddingEnd="20dp"
-            android:paddingBottom="100dp">
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp">
 
+            <!-- 헤더 바 -->
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp">
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="4dp">
 
+                <!-- 나가기 버튼 -->
                 <Button
                     android:id="@+id/btn_back"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="◀ 나가기"
-                    android:textColor="@color/text_secondary"
+                    android:text="✕ 나가기"
+                    android:textSize="13sp"
+                    android:textColor="#64748B"
                     android:background="@android:color/transparent"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
                     android:padding="0dp"
                     android:minWidth="0dp"
                     android:minHeight="0dp"
-                    android:textSize="14sp"/>
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"/>
 
-                <TextView
-                    android:id="@+id/tv_timer"
+                <!-- 타이머 + 프로그레스 -->
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="03:00"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:textColor="#F44336"
-                    android:layout_centerInParent="true"/>
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_centerInParent="true">
 
+                    <TextView
+                        android:id="@+id/tv_timer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="03:00"
+                        android:textSize="26sp"
+                        android:textStyle="bold"
+                        android:textColor="#F97316"/>
+
+                    <ProgressBar
+                        android:id="@+id/pb_timer"
+                        style="@android:style/Widget.ProgressBar.Horizontal"
+                        android:layout_width="56dp"
+                        android:layout_height="4dp"
+                        android:layout_marginTop="4dp"
+                        android:progressTint="#F97316"
+                        android:progressBackgroundTint="#FFE4C4"
+                        android:max="180"
+                        android:progress="180"/>
+                </LinearLayout>
+
+                <!-- 점수 배지 -->
                 <TextView
                     android:id="@+id/tv_current_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0점"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
-                    android:textColor="@color/color_accent"
+                    android:textColor="#5211D4"
+                    android:background="@drawable/bg_score_badge"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"/>
             </RelativeLayout>
 
+            <!-- 피드백 텍스트 -->
             <TextView
                 android:id="@+id/tv_feedback"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textStyle="bold"
-                android:textColor="@color/feedback_error"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"/>
+                android:textColor="#EF4444"
+                android:gravity="center"
+                android:layout_marginBottom="4dp"
+                android:minHeight="20dp"/>
 
+            <!-- 퀴즈 카드 -->
             <FrameLayout
                 android:id="@+id/layout_card"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_border_purple"
+                android:background="@drawable/bg_quiz_card"
                 android:elevation="4dp"
-                android:paddingBottom="20dp"
-                android:layout_marginBottom="10dp">
+                android:layout_marginBottom="16dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -98,6 +126,13 @@
                     android:orientation="vertical"
                     android:gravity="center_horizontal">
 
+                    <!-- 보라색 상단 강조 바 -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="#5211D4"/>
+
+                    <!-- 초성 -->
                     <TextView
                         android:id="@+id/tv_initial"
                         android:layout_width="wrap_content"
@@ -105,132 +140,173 @@
                         android:text="초 성"
                         android:textSize="40sp"
                         android:textStyle="bold"
-                        android:textColor="@color/color_primary"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginBottom="10dp"/>
+                        android:textColor="#1E293B"
+                        android:letterSpacing="0.1"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"/>
 
-                    <TextView
-                        android:id="@+id/tv_mean"
-                        android:layout_width="wrap_content"
+                    <!-- 뜻 설명 박스 -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="뜻 설명"
-                        android:textSize="16sp"
-                        android:textColor="@color/text_secondary"
-                        android:gravity="center"
-                        android:layout_marginHorizontal="20dp"
-                        android:layout_marginBottom="20dp"/>
+                        android:background="#F8F9FA"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="12dp">
 
+                        <TextView
+                            android:id="@+id/tv_mean"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="뜻 설명"
+                            android:textSize="15sp"
+                            android:textColor="#475569"
+                            android:gravity="center"
+                            android:fontFamily="serif"
+                            android:textStyle="italic"/>
+                    </LinearLayout>
+
+                    <!-- 예문 (힌트, 기본 gone) -->
                     <TextView
                         android:id="@+id/tv_example"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="예문"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/text_primary"
-                        android:background="#22888888"
-                        android:padding="15dp"
-                        android:visibility="gone"
+                        android:textSize="14sp"
+                        android:textColor="#64748B"
+                        android:background="#EEF2FF"
+                        android:padding="14dp"
                         android:gravity="center"
-                        android:layout_marginHorizontal="10dp"
-                        android:layout_marginBottom="20dp"/>
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="12dp"
+                        android:visibility="gone"/>
 
-                    <LinearLayout
+                    <!-- 입력 필드 -->
+                    <EditText
+                        android:id="@+id/et_answer"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:gravity="center_vertical"
-                        android:layout_marginHorizontal="20dp">
+                        android:layout_height="52dp"
+                        android:hint="정답 입력"
+                        android:inputType="text"
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"
+                        android:gravity="center"
+                        android:background="@drawable/bg_input_field"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:textSize="16sp"
+                        android:textColor="#1E293B"
+                        android:textColorHint="#94A3B8"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="12dp"/>
 
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
+                    <!-- 제출 버튼 -->
+                    <Button
+                        android:id="@+id/btn_submit"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:text="제출 ▶"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:textColor="#FFFFFF"
+                        android:background="@drawable/bg_submit_btn"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:stateListAnimator="@null"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="24dp"
+                        android:elevation="2dp"/>
 
-                            <EditText
-                                android:id="@+id/et_answer"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:hint="정답 입력"
-                                android:inputType="text"
-                                android:imeOptions="actionDone"
-                                android:singleLine="true"
-                                android:gravity="center_horizontal"
-                                android:background="@null"
-                                android:padding="10dp"
-                                android:textSize="18sp"
-                                android:textColor="@color/text_primary"
-                                android:textColorHint="@color/text_hint"/>
-
-                            <View
-                                android:layout_width="match_parent"
-                                android:layout_height="2dp"
-                                android:background="@color/text_secondary"/>
-                        </LinearLayout>
-
-                        <Button
-                            android:id="@+id/btn_submit"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
-                            android:text="제출"
-                            android:textSize="13sp"
-                            android:padding="0dp"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:backgroundTint="@color/btn_bg_hint"
-                            android:textColor="@color/card_bg"
-                            android:layout_marginStart="10dp"/>
-                    </LinearLayout>
                 </LinearLayout>
             </FrameLayout>
 
+            <!-- 프로그레스 닷 -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    android:layout_marginHorizontal="50dp">
-
-                    <Button
-                        android:id="@+id/btn_hint"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="힌트"
-                        android:backgroundTint="@color/btn_bg_hint"
-                        android:textColor="@color/card_bg"
-                        android:layout_marginEnd="5dp"/>
-
-                    <Button
-                        android:id="@+id/btn_pass"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:text="PASS (-5초)"
-                        android:backgroundTint="#FF9800"
-                        android:textColor="@color/card_bg"
-                        android:layout_marginStart="5dp"/>
-                </LinearLayout>
-
-                <Button
-                    android:id="@+id/btn_restart"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="⏱️ 다시 도전하기"
-                    android:backgroundTint="@color/btn_bg_restart"
-                    android:textColor="@color/card_bg"
-                    android:textSize="16sp"
-                    android:padding="15dp"
-                    android:visibility="gone"
-                    android:layout_marginTop="20dp"/>
+                <View android:layout_width="8dp" android:layout_height="8dp"
+                    android:background="#5211D4" android:layout_marginRight="4dp"/>
+                <View android:layout_width="8dp" android:layout_height="8dp"
+                    android:background="#E2E8F0" android:layout_marginRight="4dp"/>
+                <View android:layout_width="8dp" android:layout_height="8dp"
+                    android:background="#E2E8F0" android:layout_marginRight="4dp"/>
+                <View android:layout_width="8dp" android:layout_height="8dp"
+                    android:background="#E2E8F0" android:layout_marginRight="4dp"/>
+                <View android:layout_width="8dp" android:layout_height="8dp"
+                    android:background="#E2E8F0"/>
             </LinearLayout>
+
+            <!-- 다시 도전 버튼 (게임 종료 시 표시) -->
+            <Button
+                android:id="@+id/btn_restart"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
+                android:text="⏱️ 다시 도전하기"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:background="@drawable/bg_category_icon_teal"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:stateListAnimator="@null"
+                android:visibility="gone"
+                android:layout_marginBottom="16dp"/>
+
         </LinearLayout>
     </ScrollView>
-</RelativeLayout>
+
+    <!-- 힌트 / PASS 버튼 (하단 고정) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="16dp"
+        android:background="#F6F6F8">
+
+        <Button
+            android:id="@+id/btn_hint"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="52dp"
+            android:text="💡 힌트"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:textColor="#5211D4"
+            android:background="@drawable/bg_hint_btn_new"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:stateListAnimator="@null"
+            android:layout_marginRight="8dp"/>
+
+        <Button
+            android:id="@+id/btn_pass"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="52dp"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#EA580C"
+            android:background="@drawable/bg_pass_btn_new"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:stateListAnimator="@null"
+            android:layout_marginLeft="8dp"
+            android:text="⏭ PASS&#10;(-5초)"/>
+
+    </LinearLayout>
+</LinearLayout>

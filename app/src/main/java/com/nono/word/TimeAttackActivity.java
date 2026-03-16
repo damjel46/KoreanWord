@@ -12,6 +12,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,8 +37,9 @@ public class TimeAttackActivity extends AppCompatActivity {
     // UI 변수
     private TextView tvInitial, tvMean, tvExample, tvTimer, tvCurrentScore, tvFeedback;
     private EditText etAnswer;
-    private Button btnHint, btnPass, btnSubmit, btnRestart, btnBack; // btnReveal -> btnPass 변경
+    private Button btnHint, btnPass, btnSubmit, btnRestart, btnBack;
     private FrameLayout layoutCard;
+    private ProgressBar pbTimer;
     private AdView adViewTop;
 
     // 데이터 변수
@@ -99,6 +101,9 @@ public class TimeAttackActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btn_back);
 
         adViewTop = findViewById(R.id.adViewTop);
+        pbTimer = findViewById(R.id.pb_timer);
+        pbTimer.setMax((int) (timeLimit / 1000));
+        pbTimer.setProgress((int) (timeLimit / 1000));
 
         btnBack.setOnClickListener(v -> finish());
 
@@ -159,9 +164,10 @@ public class TimeAttackActivity extends AppCompatActivity {
                 long min = seconds / 60;
                 long sec = seconds % 60;
                 tvTimer.setText(String.format("%02d:%02d", min, sec));
+                pbTimer.setProgress((int) seconds);
 
                 if (seconds <= 10) tvTimer.setTextColor(Color.RED);
-                else tvTimer.setTextColor(Color.parseColor("#F44336"));
+                else tvTimer.setTextColor(Color.parseColor("#F97316"));
             }
 
             @Override
@@ -247,7 +253,7 @@ public class TimeAttackActivity extends AppCompatActivity {
             // 정답 메시지는 1초 뒤 사라짐
             tvFeedback.postDelayed(() -> tvFeedback.setText(""), 1000);
 
-            layoutCard.setBackgroundResource(R.drawable.bg_border_purple);
+            layoutCard.setBackgroundResource(R.drawable.bg_quiz_card);
 
         } else {
             //  오답 시 패널티 (-2초)
@@ -255,10 +261,10 @@ public class TimeAttackActivity extends AppCompatActivity {
 
             Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
             layoutCard.startAnimation(shake);
-            layoutCard.setBackgroundResource(R.drawable.bg_border_red);
+            layoutCard.setBackgroundResource(R.drawable.bg_quiz_card_error);
             etAnswer.setText("");
 
-            layoutCard.postDelayed(() -> layoutCard.setBackgroundResource(R.drawable.bg_border_purple), 500);
+            layoutCard.postDelayed(() -> layoutCard.setBackgroundResource(R.drawable.bg_quiz_card), 500);
         }
     }
 
