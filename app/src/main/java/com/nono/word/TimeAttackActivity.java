@@ -1,5 +1,6 @@
 package com.nono.word;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Color;
@@ -25,7 +26,15 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.games.PlayGames;
+
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
+import android.view.Window;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -50,11 +59,15 @@ public class TimeAttackActivity extends AppCompatActivity {
     // 게임 상태 변수
     private int currentScore = 0;
     private boolean isHintUsed = false;
+    private boolean gameFinished = false;
     private CountDownTimer timer;
     private WordRepository repository;
 
     private long timeLimit = Constants.TIME_LIMIT_3MIN;
     private long timeLeftInMillis;
+
+    private RewardedAd rewardedAd;
+    private FirebaseLeaderboard leaderboard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +76,8 @@ public class TimeAttackActivity extends AppCompatActivity {
 
         MobileAds.initialize(this, initializationStatus -> {});
         repository = new WordRepository(this);
+        leaderboard = new FirebaseLeaderboard();
+        loadRewardedAd();
 
         // Intent 데이터 수신
         timeLimit = getIntent().getLongExtra("TIME_LIMIT", Constants.TIME_LIMIT_3MIN);
@@ -212,6 +227,7 @@ public class TimeAttackActivity extends AppCompatActivity {
     }
 
     private void loadNextQuestion() {
+        if (gameFinished) return;
         if (quizList.isEmpty()) {
             quizList.addAll(allWordList);
             Collections.shuffle(quizList, new Random(System.nanoTime()));
@@ -269,15 +285,13 @@ public class TimeAttackActivity extends AppCompatActivity {
     }
 
     private void finishGame() {
+        gameFinished = true;
         enableGameUI(false);
         tvFeedback.setText("⏰ 시간 종료! 최종 점수: " + currentScore + "점");
         tvTimer.setText("00:00");
 
         checkAndSaveBestScore();
-
-        if (timeLimit == Constants.TIME_LIMIT_3MIN) {
-            submitLeaderboardScore();
-        }
+        showLeaderboardRegisterDialog();
 
         btnRestart.setVisibility(View.VISIBLE);
     }
@@ -292,14 +306,100 @@ public class TimeAttackActivity extends AppCompatActivity {
         }
     }
 
-    private void submitLeaderboardScore() {
-        try {
-            PlayGames.getLeaderboardsClient(this)
-                    .submitScoreImmediate(Constants.LEADERBOARD_ID, currentScore)
-                    .addOnFailureListener(e -> Toast.makeText(this, "전송 실패", Toast.LENGTH_SHORT).show());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void loadRewardedAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        RewardedAd.load(this, Constants.REWARDED_AD_ID, adRequest, new RewardedAdLoadCallback() {
+            @Override
+            public void onAdLoaded(RewardedAd ad) {
+                rewardedAd = ad;
+            }
+            @Override
+            public void onAdFailedToLoad(LoadAdError error) {
+                rewardedAd = null;
+            }
+        });
+    }
+
+    private void showLeaderboardRegisterDialog() {
+        if (currentScore <= 0) return;
+
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_leaderboard_register);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(
+                (int) (getResources().getDisplayMetrics().widthPixels * 0.88),
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        dialog.setCancelable(false);
+
+        TextView tvScore = dialog.findViewById(R.id.tv_dialog_score);
+        EditText etNickname = dialog.findViewById(R.id.et_nickname);
+        tvScore.setText("최종 점수: " + currentScore + "점");
+
+        dialog.findViewById(R.id.btn_dialog_cancel).setOnClickListener(v -> dialog.dismiss());
+        dialog.findViewById(R.id.btn_dialog_register).setOnClickListener(v -> {
+            String nickname = etNickname.getText().toString().trim();
+            if (nickname.isEmpty()) {
+                Toast.makeText(this, "닉네임을 입력해주세요", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (rewardedAd != null) {
+                rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        rewardedAd = null;
+                        loadRewardedAd();
+                    }
+                });
+                rewardedAd.show(TimeAttackActivity.this, rewardItem -> {
+                    // 광고 시청 완료 → 등록
+                    leaderboard.submitScore(
+                            Constants.COLLECTION_LEADERBOARD_CHOSEONG,
+                            nickname, currentScore,
+                            new FirebaseLeaderboard.OnResultListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Toast.makeText(TimeAttackActivity.this, "랭킹 등록 완료! 🎉", Toast.LENGTH_SHORT).show();
+                                    goToLeaderboard();
+                                }
+                                @Override
+                                public void onFailure(String error) {
+                                    Toast.makeText(TimeAttackActivity.this, "등록 실패: " + error, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                    );
+                    dialog.dismiss();
+                });
+            } else {
+                // 광고 로드 실패 시 그냥 등록
+                leaderboard.submitScore(
+                        Constants.COLLECTION_LEADERBOARD_CHOSEONG,
+                        nickname, currentScore,
+                        new FirebaseLeaderboard.OnResultListener() {
+                            @Override
+                            public void onSuccess() {
+                                Toast.makeText(TimeAttackActivity.this, "랭킹 등록 완료! 🎉", Toast.LENGTH_SHORT).show();
+                                goToLeaderboard();
+                            }
+                            @Override
+                            public void onFailure(String error) {
+                                Toast.makeText(TimeAttackActivity.this, "등록 실패: " + error, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void goToLeaderboard() {
+        Intent intent = new Intent(this, LeaderboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void enableGameUI(boolean enable) {

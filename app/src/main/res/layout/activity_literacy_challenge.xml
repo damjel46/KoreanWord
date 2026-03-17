@@ -254,7 +254,7 @@
                             android:id="@+id/btn_pass"
                             android:layout_width="match_parent"
                             android:layout_height="52dp"
-                            android:text="🚫 PASS&#10;(-5초)"
+                            android:text="🚫 PASS&#10;(-2초)"
                             android:textSize="13sp"
                             android:textStyle="bold"
                             android:textColor="#FFFFFF"

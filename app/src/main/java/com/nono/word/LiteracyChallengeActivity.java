@@ -1,5 +1,6 @@
 package com.nono.word;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -19,9 +20,20 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.games.PlayGames;
 
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
+import android.view.Window;
+import android.widget.EditText;
+import android.widget.TextView;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -40,6 +52,8 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
 
     private int currentScore = 0;
     private boolean answered = false;
+    private boolean gameFinished = false;
+    private int shuffledCorrectIndex;
     private CountDownTimer timer;
     private WordRepository repository;
 
@@ -47,6 +61,9 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
     private long timeLeftInMillis;
     private Button[] choiceButtons;
     private Random random;
+
+    private RewardedAd rewardedAd;
+    private FirebaseLeaderboard leaderboard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +73,8 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
         MobileAds.initialize(this, initializationStatus -> {});
         repository = new WordRepository(this);
         random = new Random(System.nanoTime());
+        leaderboard = new FirebaseLeaderboard();
+        loadRewardedAd();
 
         // Intent 데이터 수신
         timeLimit = getIntent().getLongExtra("TIME_LIMIT", Constants.TIME_LIMIT_3MIN);
@@ -186,6 +205,7 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
     }
 
     private void showQuestion() {
+        if (gameFinished) return;
         answered = false;
         btnRestart.setVisibility(View.GONE);
         layoutCard.setVisibility(View.VISIBLE);
@@ -208,10 +228,16 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
             tvPassage.setVisibility(View.GONE);
         }
 
+        // 보기 순서 랜덤 셔플
+        String[] originalChoices = currentItem.getChoices();
+        List<Integer> order = new ArrayList<>();
+        for (int i = 0; i < originalChoices.length; i++) order.add(i);
+        Collections.shuffle(order);
+        shuffledCorrectIndex = order.indexOf(currentItem.getCorrectIndex());
+
         String[] prefixes = {"① ", "② ", "③ ", "④ "};
-        String[] choices = currentItem.getChoices();
         for (int i = 0; i < choiceButtons.length; i++) {
-            choiceButtons[i].setText(prefixes[i] + choices[i]);
+            choiceButtons[i].setText(prefixes[i] + originalChoices[order.get(i)]);
             choiceButtons[i].setBackgroundResource(R.drawable.bg_choice_btn);
             choiceButtons[i].setBackgroundTintList(null);
             choiceButtons[i].setTextColor(Color.parseColor("#334155"));
@@ -225,7 +251,7 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
         if (selected < 0 || answered) return;
         answered = true;
 
-        int correct = currentItem.getCorrectIndex();
+        int correct = shuffledCorrectIndex;
 
         // 모든 버튼 비활성화
         for (Button btn : choiceButtons) btn.setEnabled(false);
@@ -262,16 +288,14 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
     }
 
     private void finishGame() {
+        gameFinished = true;
         enableGameUI(false);
         btnPass.setEnabled(false);
         tvFeedback.setText("⏰ 시간 종료! 최종 점수: " + currentScore + "점");
         tvTimer.setText("00:00");
 
         checkAndSaveBestScore();
-
-        if (timeLimit == Constants.TIME_LIMIT_3MIN) {
-            submitLeaderboardScore();
-        }
+        showLeaderboardRegisterDialog();
 
         btnRestart.setVisibility(View.VISIBLE);
     }
@@ -284,14 +308,98 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
         }
     }
 
-    private void submitLeaderboardScore() {
-        try {
-            PlayGames.getLeaderboardsClient(this)
-                    .submitScoreImmediate(Constants.LEADERBOARD_ID, currentScore)
-                    .addOnFailureListener(e -> Toast.makeText(this, "전송 실패", Toast.LENGTH_SHORT).show());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void loadRewardedAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        RewardedAd.load(this, Constants.REWARDED_AD_ID, adRequest, new RewardedAdLoadCallback() {
+            @Override
+            public void onAdLoaded(RewardedAd ad) {
+                rewardedAd = ad;
+            }
+            @Override
+            public void onAdFailedToLoad(LoadAdError error) {
+                rewardedAd = null;
+            }
+        });
+    }
+
+    private void showLeaderboardRegisterDialog() {
+        if (currentScore <= 0) return;
+
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_leaderboard_register);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(
+                (int) (getResources().getDisplayMetrics().widthPixels * 0.88),
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        dialog.setCancelable(false);
+
+        TextView tvScore = dialog.findViewById(R.id.tv_dialog_score);
+        EditText etNickname = dialog.findViewById(R.id.et_nickname);
+        tvScore.setText("최종 점수: " + currentScore + "점");
+
+        dialog.findViewById(R.id.btn_dialog_cancel).setOnClickListener(v -> dialog.dismiss());
+        dialog.findViewById(R.id.btn_dialog_register).setOnClickListener(v -> {
+            String nickname = etNickname.getText().toString().trim();
+            if (nickname.isEmpty()) {
+                Toast.makeText(this, "닉네임을 입력해주세요", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (rewardedAd != null) {
+                rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                    @Override
+                    public void onAdDismissedFullScreenContent() {
+                        rewardedAd = null;
+                        loadRewardedAd();
+                    }
+                });
+                rewardedAd.show(LiteracyChallengeActivity.this, rewardItem -> {
+                    leaderboard.submitScore(
+                            Constants.COLLECTION_LEADERBOARD_LITERACY,
+                            nickname, currentScore,
+                            new FirebaseLeaderboard.OnResultListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Toast.makeText(LiteracyChallengeActivity.this, "랭킹 등록 완료! 🎉", Toast.LENGTH_SHORT).show();
+                                    goToLeaderboard();
+                                }
+                                @Override
+                                public void onFailure(String error) {
+                                    Toast.makeText(LiteracyChallengeActivity.this, "등록 실패: " + error, Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                    );
+                    dialog.dismiss();
+                });
+            } else {
+                leaderboard.submitScore(
+                        Constants.COLLECTION_LEADERBOARD_LITERACY,
+                        nickname, currentScore,
+                        new FirebaseLeaderboard.OnResultListener() {
+                            @Override
+                            public void onSuccess() {
+                                Toast.makeText(LiteracyChallengeActivity.this, "랭킹 등록 완료! 🎉", Toast.LENGTH_SHORT).show();
+                                goToLeaderboard();
+                            }
+                            @Override
+                            public void onFailure(String error) {
+                                Toast.makeText(LiteracyChallengeActivity.this, "등록 실패: " + error, Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void goToLeaderboard() {
+        Intent intent = new Intent(this, LeaderboardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void enableGameUI(boolean enable) {

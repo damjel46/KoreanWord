@@ -19,6 +19,13 @@ public final class Constants {
     static final long TIME_LIMIT_1MIN = 60_000L;
     static final long TIME_LIMIT_3MIN = 180_000L;
 
+    // 리워드 광고 ID
+    static final String REWARDED_AD_ID = "ca-app-pub-5497677824149260/6804698298";
+
+    // Firestore 컬렉션명
+    static final String COLLECTION_LEADERBOARD_CHOSEONG = "leaderboard_choseong";
+    static final String COLLECTION_LEADERBOARD_LITERACY = "leaderboard_literacy";
+
     // 문해력 테스트
     static final String KEY_LITERACY_BEST_SCORE = "literacyBestScore";
     static final String KEY_LITERACY_CHALLENGE_SCORE_PREFIX = "literacyChallengeBest_";

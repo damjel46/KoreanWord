@@ -307,7 +307,7 @@
             android:stateListAnimator="@null"
             android:layout_marginLeft="8dp"
             android:gravity="center"
-            android:text="🚫 PASS&#10;(-5초)"/>
+            android:text="🚫 PASS&#10;(-2초)"/>
 
     </LinearLayout>
 </LinearLayout>

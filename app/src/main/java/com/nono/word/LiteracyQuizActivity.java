@@ -38,6 +38,7 @@ public class LiteracyQuizActivity extends AppCompatActivity {
     private int maxStreak = 0;
     private int totalQuestions;
     private boolean answered = false;
+    private int shuffledCorrectIndex;
 
     private WordRepository repository;
     private Button[] choiceButtons;
@@ -109,6 +110,8 @@ public class LiteracyQuizActivity extends AppCompatActivity {
         btnRestart.setOnClickListener(v -> {
             currentIndex = 0;
             score = 0;
+            currentStreak = 0;
+            maxStreak = 0;
             Collections.shuffle(quizList, new Random(System.nanoTime()));
             if (quizList.size() > Constants.LITERACY_QUIZ_COUNT) {
                 quizList = new ArrayList<>(quizList.subList(0, Constants.LITERACY_QUIZ_COUNT));
@@ -161,10 +164,16 @@ public class LiteracyQuizActivity extends AppCompatActivity {
             tvPassage.setVisibility(View.GONE);
         }
 
+        // 보기 순서 랜덤 셔플
+        String[] originalChoices = item.getChoices();
+        List<Integer> order = new ArrayList<>();
+        for (int i = 0; i < originalChoices.length; i++) order.add(i);
+        Collections.shuffle(order);
+        shuffledCorrectIndex = order.indexOf(item.getCorrectIndex());
+
         String[] prefixes = {"① ", "② ", "③ ", "④ "};
-        String[] choices = item.getChoices();
         for (int i = 0; i < choiceButtons.length; i++) {
-            choiceButtons[i].setText(prefixes[i] + choices[i]);
+            choiceButtons[i].setText(prefixes[i] + originalChoices[order.get(i)]);
             choiceButtons[i].setBackgroundResource(R.drawable.bg_choice_btn);
             choiceButtons[i].setBackgroundTintList(null);
             choiceButtons[i].setTextColor(Color.parseColor("#334155"));
@@ -178,8 +187,7 @@ public class LiteracyQuizActivity extends AppCompatActivity {
         if (selected < 0) return;
         answered = true;
 
-        LiteracyItem item = quizList.get(currentIndex);
-        int correct = item.getCorrectIndex();
+        int correct = shuffledCorrectIndex;
 
         // 모든 버튼 비활성화
         for (Button btn : choiceButtons) btn.setEnabled(false);

@@ -24,8 +24,9 @@ public class HomeActivity extends AppCompatActivity {
 
     // UI 변수
     private TextView tvBestScore, tvBest1Min, tvBest3Min;
+    private TextView tvBestLiteracy1Min, tvBestLiteracy3Min;
     private View btnGroup1, btnGroup2, btnGroup3, btnRandomAll, btnChallenge1Min, btnChallenge3Min;
-    private View btnOnlyBookmark, btnTrash;
+    private View btnOnlyBookmark, btnTrash, btnRanking;
 
     // 탭 관련
     private TextView tabChoseong, tabLiteracy;
@@ -81,6 +82,7 @@ public class HomeActivity extends AppCompatActivity {
 
         btnOnlyBookmark = findViewById(R.id.btn_only_bookmark);
         btnTrash = findViewById(R.id.btn_trash);
+        btnRanking = findViewById(R.id.btn_ranking);
 
         // 탭 관련
         tabChoseong = findViewById(R.id.tab_choseong);
@@ -91,6 +93,8 @@ public class HomeActivity extends AppCompatActivity {
         // 문해력 챌린지 버튼
         btnLiteracyChallenge1Min = findViewById(R.id.btn_literacy_challenge_1min);
         btnLiteracyChallenge3Min = findViewById(R.id.btn_literacy_challenge_3min);
+        tvBestLiteracy1Min = findViewById(R.id.tv_best_literacy_1min);
+        tvBestLiteracy3Min = findViewById(R.id.tv_best_literacy_3min);
 
         // 문해력 테스트 카테고리 버튼
         btnLiteracyRandom = findViewById(R.id.btn_literacy_random);
@@ -119,6 +123,8 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(HomeActivity.this, TrashActivity.class);
             startActivity(intent);
         });
+
+        btnRanking.setOnClickListener(v -> showLeaderboard());
 
         // 탭 전환
         tabChoseong.setOnClickListener(v -> switchTab(true));
@@ -178,12 +184,12 @@ public class HomeActivity extends AppCompatActivity {
             tvTitle.setText("⚡ 1분 챌린지");
             tvTitle.setTextColor(Color.parseColor("#FFB74D"));
             btnConfirm.setBackgroundResource(R.drawable.bg_btn_dialog_confirm_orange);
-            tvMessage.setText("⏱️ 1분 안에 최대한 많이 맞춰보세요!\n\n정답 힌트 없이 진행되는 순수 실력 측정 모드예요. 틀리면 -2초, PASS는 -5초 패널티가 있으니 신중하게!\n\n도전할 준비가 되셨나요? 💪");
+            tvMessage.setText("⏱️ 1분 안에 최대한 많이 맞춰보세요!\n\n정답 힌트 없이 진행되는 순수 실력 측정 모드예요. PASS는 -2초, 틀리면 -5초 패널티가 있으니 신중하게!\n\n도전할 준비가 되셨나요? 💪");
         } else {
             tvTitle.setText("🔥 3분 챌린지");
             tvTitle.setTextColor(Color.parseColor("#FF6F61"));
             btnConfirm.setBackgroundResource(R.drawable.bg_btn_dialog_confirm);
-            tvMessage.setText("🏆 3분 동안 실력을 마음껏 발휘해보세요!\n\n정답 힌트 없이 진행되며, 점수는 전 세계 리더보드에 기록돼요. 틀리면 -2초, PASS는 -5초 패널티!\n\n도전할 준비가 되셨나요? 🔥");
+            tvMessage.setText("🏆 3분 동안 실력을 마음껏 발휘해보세요!\n\n정답 힌트 없이 진행되며, 점수는 전 세계 리더보드에 기록돼요. PASS는 -2초, 틀리면 -5초 패널티!\n\n도전할 준비가 되셨나요? 🔥");
         }
 
         dialog.findViewById(R.id.btn_dialog_cancel).setOnClickListener(v -> dialog.dismiss());
@@ -198,14 +204,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void showLeaderboard() {
-        try {
-            PlayGames.getLeaderboardsClient(this)
-                    .getLeaderboardIntent(Constants.LEADERBOARD_ID)
-                    .addOnSuccessListener(intent -> startActivityForResult(intent, 9004))
-                    .addOnFailureListener(e -> e.printStackTrace());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Intent intent = new Intent(this, LeaderboardActivity.class);
+        startActivity(intent);
     }
 
     private void showLiteracyChallengeConfirmDialog(long timeLimit) {
@@ -248,8 +248,14 @@ public class HomeActivity extends AppCompatActivity {
     private void loadScores() {
         String mode = isChoseongTab ? "choseong" : "literacy";
         tvBestScore.setText("연속 정답 기록 : " + repository.getBestStreak(mode));
+
+        // 초성 탭 점수
         tvBest1Min.setText("Best: " + repository.getChallengeScore(Constants.TIME_LIMIT_1MIN));
         tvBest3Min.setText("Best: " + repository.getChallengeScore(Constants.TIME_LIMIT_3MIN));
+
+        // 문해력 탭 점수
+        tvBestLiteracy1Min.setText("Best: " + repository.getLiteracyChallengeBestScore(Constants.TIME_LIMIT_1MIN));
+        tvBestLiteracy3Min.setText("Best: " + repository.getLiteracyChallengeBestScore(Constants.TIME_LIMIT_3MIN));
     }
 
     private void startMainActivity(int groupNumber, boolean isBookmarkMode) {
