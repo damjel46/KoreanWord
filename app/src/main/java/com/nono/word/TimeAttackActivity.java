@@ -205,7 +205,7 @@ public class TimeAttackActivity extends AppCompatActivity {
     }
 
     private void passQuestion() {
-        applyPenalty(5000, "PASS! (-5초)");
+        applyPenalty(2000, "PASS (-2초)");
         // 문제 넘기기 (퀴즈 리스트에서 삭제하지 않고 뒤로 보낼 수도 있고, 삭제할 수도 있음. 여기선 삭제)
         if (currentItem != null) quizList.remove(currentItem);
         loadNextQuestion();
@@ -256,8 +256,8 @@ public class TimeAttackActivity extends AppCompatActivity {
             layoutCard.setBackgroundResource(R.drawable.bg_quiz_card);
 
         } else {
-            //  오답 시 패널티 (-2초)
-            applyPenalty(2000, "틀렸습니다! (-2초)");
+            //  오답 시 패널티 (-5초)
+            applyPenalty(5000, "틀렸습니다! (-5초)");
 
             Animation shake = AnimationUtils.loadAnimation(this, R.anim.shake);
             layoutCard.startAnimation(shake);

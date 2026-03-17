@@ -38,7 +38,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="문해력 퀴즈"
+                        android:text="문해력 테스트"
                         android:textSize="24sp"
                         android:textStyle="bold"
                         android:textColor="#5211D4"/>
@@ -94,24 +94,24 @@
                 android:padding="4dp">
 
                 <TextView
-                    android:id="@+id/tab_choseong"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="초성 퀴즈"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:textColor="#FFFFFF"
-                    android:background="@drawable/bg_tab_active"/>
-
-                <TextView
                     android:id="@+id/tab_literacy"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
                     android:text="문해력 테스트"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/bg_tab_active"/>
+
+                <TextView
+                    android:id="@+id/tab_choseong"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="초성 퀴즈"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:textColor="#94A3B8"
@@ -399,14 +399,6 @@
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#1E293B"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="기본 어휘 정복"
-                        android:textSize="11sp"
-                        android:textColor="#94A3B8"
-                        android:layout_marginTop="2dp"/>
                 </LinearLayout>
 
                 <TextView
@@ -466,14 +458,6 @@
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#1E293B"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="일상 생활 표현"
-                        android:textSize="11sp"
-                        android:textColor="#94A3B8"
-                        android:layout_marginTop="2dp"/>
                 </LinearLayout>
 
                 <TextView
@@ -533,14 +517,6 @@
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#1E293B"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="고급 어휘 챌린지"
-                        android:textSize="11sp"
-                        android:textColor="#94A3B8"
-                        android:layout_marginTop="2dp"/>
                 </LinearLayout>
 
                 <TextView
@@ -627,6 +603,154 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:visibility="gone">
+
+                <!-- 섹션: 시간 제한 도전 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="⏱"
+                        android:textSize="16sp"
+                        android:textColor="#5211D4"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="  시간 제한 도전"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="#1E293B"/>
+                </LinearLayout>
+
+                <!-- 챌린지 카드 2개 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="16dp">
+
+                    <!-- 1분 도전 -->
+                    <LinearLayout
+                        android:id="@+id/btn_literacy_challenge_1min"
+                        android:layout_width="0dp"
+                        android:layout_height="140dp"
+                        android:layout_weight="1"
+                        android:layout_marginRight="8dp"
+                        android:orientation="vertical"
+                        android:background="@drawable/bg_gradient_1min"
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="⚡"
+                                android:textSize="26sp"/>
+
+                            <TextView
+                                android:id="@+id/tv_best_literacy_1min"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Best: 0"
+                                android:textSize="9sp"
+                                android:textStyle="bold"
+                                android:textColor="#FFFFFF"
+                                android:background="#33FFFFFF"
+                                android:paddingLeft="8dp"
+                                android:paddingRight="8dp"
+                                android:paddingTop="3dp"
+                                android:paddingBottom="3dp"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="1분 챌린지"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#FFFFFF"
+                            android:layout_marginBottom="2dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="시간 내에 최대한 많이"
+                            android:textSize="10sp"
+                            android:textColor="#E0F2FE"/>
+                    </LinearLayout>
+
+                    <!-- 3분 도전 -->
+                    <LinearLayout
+                        android:id="@+id/btn_literacy_challenge_3min"
+                        android:layout_width="0dp"
+                        android:layout_height="140dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="8dp"
+                        android:orientation="vertical"
+                        android:background="@drawable/bg_gradient_3min"
+                        android:padding="16dp"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="🔥"
+                                android:textSize="26sp"/>
+
+                            <TextView
+                                android:id="@+id/tv_best_literacy_3min"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Best: 0"
+                                android:textSize="9sp"
+                                android:textStyle="bold"
+                                android:textColor="#FFFFFF"
+                                android:background="#33FFFFFF"
+                                android:paddingLeft="8dp"
+                                android:paddingRight="8dp"
+                                android:paddingTop="3dp"
+                                android:paddingBottom="3dp"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="3분 챌린지"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#FFFFFF"
+                            android:layout_marginBottom="2dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="리더보드에 도전!"
+                            android:textSize="10sp"
+                            android:textColor="#FEE2E2"/>
+                    </LinearLayout>
+                </LinearLayout>
 
                 <!-- 전체 랜덤 20문제 -->
                 <LinearLayout
@@ -1170,119 +1294,5 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <!-- 하단 내비게이션 -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:orientation="horizontal"
-        android:background="#FFFFFF"
-        android:elevation="8dp"
-        android:gravity="center_vertical">
-
-        <!-- 홈 (활성) -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="⌂"
-                android:textSize="22sp"
-                android:textColor="#5211D4"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="홈"
-                android:textSize="10sp"
-                android:textStyle="bold"
-                android:textColor="#5211D4"
-                android:layout_marginTop="2dp"/>
-        </LinearLayout>
-
-        <!-- 학습 -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="📖"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="학습"
-                android:textSize="10sp"
-                android:textColor="#94A3B8"
-                android:layout_marginTop="2dp"/>
-        </LinearLayout>
-
-        <!-- 랭킹 -->
-        <LinearLayout
-            android:id="@+id/btn_ranking"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="🏆"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="랭킹"
-                android:textSize="10sp"
-                android:textColor="#94A3B8"
-                android:layout_marginTop="2dp"/>
-        </LinearLayout>
-
-        <!-- 설정 -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:focusable="true">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="⚙"
-                android:textSize="20sp"
-                android:textColor="#94A3B8"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="설정"
-                android:textSize="10sp"
-                android:textColor="#94A3B8"
-                android:layout_marginTop="2dp"/>
-        </LinearLayout>
-    </LinearLayout>
 
 </LinearLayout>

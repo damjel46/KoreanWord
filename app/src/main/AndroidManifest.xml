@@ -18,6 +18,9 @@
         <activity android:name=".TrashActivity" />
         <activity android:name=".LiteracyQuizActivity" />
         <activity
+            android:name=".LiteracyChallengeActivity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".TimeAttackActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity

@@ -8,7 +8,8 @@ public final class Constants {
     // SharedPreferences 키
     static final String KEY_BOOKMARKS = "bookmarks";
     static final String KEY_EXCLUDED = "excluded";
-    static final String KEY_BEST_STREAK = "bestStreak";
+    static final String KEY_BEST_STREAK_CHOSEONG = "bestStreak_choseong";
+    static final String KEY_BEST_STREAK_LITERACY = "bestStreak_literacy";
     static final String KEY_CHALLENGE_SCORE_PREFIX = "challengeBest_";
 
     // Google Play Games 리더보드 ID
@@ -20,5 +21,6 @@ public final class Constants {
 
     // 문해력 테스트
     static final String KEY_LITERACY_BEST_SCORE = "literacyBestScore";
+    static final String KEY_LITERACY_CHALLENGE_SCORE_PREFIX = "literacyChallengeBest_";
     static final int LITERACY_QUIZ_COUNT = 20;
 }

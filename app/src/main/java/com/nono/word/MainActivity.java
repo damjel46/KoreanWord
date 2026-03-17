@@ -402,8 +402,8 @@ public class MainActivity extends AppCompatActivity {
 
     // 최고 점수 갱신
     private void updateBestScore(int currentScore) {
-        if (currentScore > repository.getBestStreak()) {
-            repository.saveBestStreak(currentScore);
+        if (currentScore > repository.getBestStreak("choseong")) {
+            repository.saveBestStreak("choseong", currentScore);
         }
     }
 

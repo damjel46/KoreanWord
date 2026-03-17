@@ -81,12 +81,14 @@ public class WordRepository {
 
     // ── 점수 ─────────────────────────────────────────────────
 
-    public int getBestStreak() {
-        return prefs.getInt(Constants.KEY_BEST_STREAK, 0);
+    public int getBestStreak(String mode) {
+        String key = mode.equals("choseong") ? Constants.KEY_BEST_STREAK_CHOSEONG : Constants.KEY_BEST_STREAK_LITERACY;
+        return prefs.getInt(key, 0);
     }
 
-    public void saveBestStreak(int score) {
-        prefs.edit().putInt(Constants.KEY_BEST_STREAK, score).apply();
+    public void saveBestStreak(String mode, int score) {
+        String key = mode.equals("choseong") ? Constants.KEY_BEST_STREAK_CHOSEONG : Constants.KEY_BEST_STREAK_LITERACY;
+        prefs.edit().putInt(key, score).apply();
     }
 
     public int getChallengeScore(long timeLimit) {
@@ -138,5 +140,15 @@ public class WordRepository {
 
     public void saveLiteracyBestScore(int score) {
         prefs.edit().putInt(Constants.KEY_LITERACY_BEST_SCORE, score).apply();
+    }
+
+    // ── 문해력 챌린지 ────────────────────────────────────────────
+
+    public int getLiteracyChallengeBestScore(long timeLimit) {
+        return prefs.getInt(Constants.KEY_LITERACY_CHALLENGE_SCORE_PREFIX + timeLimit, 0);
+    }
+
+    public void saveLiteracyChallengeBestScore(long timeLimit, int score) {
+        prefs.edit().putInt(Constants.KEY_LITERACY_CHALLENGE_SCORE_PREFIX + timeLimit, score).apply();
     }
 }

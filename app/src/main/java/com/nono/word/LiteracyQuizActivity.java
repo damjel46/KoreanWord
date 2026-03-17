@@ -34,6 +34,8 @@ public class LiteracyQuizActivity extends AppCompatActivity {
     private List<LiteracyItem> quizList = new ArrayList<>();
     private int currentIndex = 0;
     private int score = 0;
+    private int currentStreak = 0;
+    private int maxStreak = 0;
     private int totalQuestions;
     private boolean answered = false;
 
@@ -189,10 +191,13 @@ public class LiteracyQuizActivity extends AppCompatActivity {
 
         if (selected == correct) {
             score++;
+            currentStreak++;
+            maxStreak = Math.max(maxStreak, currentStreak);
             tvScore.setText(score + "점");
             tvFeedback.setText("정답! 🎉");
             tvFeedback.setTextColor(Color.parseColor("#16A34A"));
         } else {
+            currentStreak = 0;
             choiceButtons[selected].setBackgroundResource(R.drawable.bg_choice_wrong);
             choiceButtons[selected].setBackgroundTintList(null);
             choiceButtons[selected].setTextColor(Color.parseColor("#EF4444"));
@@ -226,6 +231,11 @@ public class LiteracyQuizActivity extends AppCompatActivity {
         if (score > repository.getLiteracyBestScore()) {
             repository.saveLiteracyBestScore(score);
             tvFeedback.append("\n\n🏆 신기록 달성!");
+        }
+
+        // 연속 정답 기록 저장
+        if (maxStreak > repository.getBestStreak("literacy")) {
+            repository.saveBestStreak("literacy", maxStreak);
         }
 
         btnRestart.setVisibility(View.VISIBLE);

@@ -16,6 +16,7 @@
         ads:adUnitId="ca-app-pub-5497677824149260/4874446941"/>
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -82,7 +83,7 @@
 
                 <!-- 점수 배지 -->
                 <TextView
-                    android:id="@+id/tv_current_score"
+                    android:id="@+id/tv_score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="0점"
@@ -132,128 +133,148 @@
                         android:layout_height="4dp"
                         android:background="#5211D4"/>
 
-                    <!-- 초성 -->
+                    <!-- 질문 텍스트 -->
                     <TextView
-                        android:id="@+id/tv_initial"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_question"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="초 성"
-                        android:textSize="40sp"
+                        android:text="질문"
+                        android:textSize="17sp"
                         android:textStyle="bold"
                         android:textColor="#1E293B"
-                        android:letterSpacing="0.1"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginBottom="8dp"/>
-
-                    <!-- 뜻 설명 박스 -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="#F8F9FA"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:paddingTop="12dp"
-                        android:paddingBottom="12dp"
+                        android:gravity="center"
+                        android:layout_marginTop="20dp"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginBottom="12dp">
+                        android:layout_marginBottom="8dp"/>
 
-                        <TextView
-                            android:id="@+id/tv_mean"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="뜻 설명"
-                            android:textSize="15sp"
-                            android:textColor="#475569"
-                            android:gravity="center"
-                            android:fontFamily="serif"
-                            android:textStyle="italic"/>
-                    </LinearLayout>
-
-                    <!-- 예문 (힌트, 기본 gone) -->
+                    <!-- 지문 (passage, 없으면 GONE) -->
                     <TextView
-                        android:id="@+id/tv_example"
+                        android:id="@+id/tv_passage"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="예문"
+                        android:text=""
                         android:textSize="14sp"
-                        android:textColor="#64748B"
-                        android:background="#EEF2FF"
-                        android:padding="14dp"
+                        android:textColor="#475569"
+                        android:fontFamily="serif"
+                        android:textStyle="italic"
+                        android:background="#F8F9FA"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
                         android:gravity="center"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_marginBottom="12dp"
                         android:visibility="gone"/>
 
-                    <!-- 입력 필드 -->
-                    <EditText
-                        android:id="@+id/et_answer"
+                    <!-- 4지선다 보기 -->
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:hint="정답 입력"
-                        android:inputType="text"
-                        android:imeOptions="actionDone"
-                        android:singleLine="true"
-                        android:gravity="center"
-                        android:background="@drawable/bg_input_field"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
-                        android:textSize="16sp"
-                        android:textColor="#1E293B"
-                        android:textColorHint="#94A3B8"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginBottom="12dp"/>
+                        android:layout_marginBottom="12dp">
 
-                    <!-- 제출 버튼 -->
-                    <Button
-                        android:id="@+id/btn_submit"
-                        android:layout_width="match_parent"
-                        android:layout_height="52dp"
-                        android:text="제출 ▶"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="#FFFFFF"
-                        android:background="@drawable/bg_submit_btn"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp"
-                        android:stateListAnimator="@null"
-                        android:layout_marginLeft="16dp"
-                        android:layout_marginRight="16dp"
-                        android:layout_marginBottom="24dp"
-                        android:elevation="2dp"/>
+                        <Button
+                            android:id="@+id/btn_choice1"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:text="① 보기1"
+                            android:textSize="14sp"
+                            android:textColor="#334155"
+                            android:background="@drawable/bg_choice_btn"
+                            android:backgroundTint="@null"
+                            android:gravity="center_vertical|start"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:stateListAnimator="@null"
+                            android:layout_marginBottom="8dp"
+                            android:textAllCaps="false"/>
+
+                        <Button
+                            android:id="@+id/btn_choice2"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:text="② 보기2"
+                            android:textSize="14sp"
+                            android:textColor="#334155"
+                            android:background="@drawable/bg_choice_btn"
+                            android:backgroundTint="@null"
+                            android:gravity="center_vertical|start"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:stateListAnimator="@null"
+                            android:layout_marginBottom="8dp"
+                            android:textAllCaps="false"/>
+
+                        <Button
+                            android:id="@+id/btn_choice3"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:text="③ 보기3"
+                            android:textSize="14sp"
+                            android:textColor="#334155"
+                            android:background="@drawable/bg_choice_btn"
+                            android:backgroundTint="@null"
+                            android:gravity="center_vertical|start"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:stateListAnimator="@null"
+                            android:layout_marginBottom="8dp"
+                            android:textAllCaps="false"/>
+
+                        <Button
+                            android:id="@+id/btn_choice4"
+                            android:layout_width="match_parent"
+                            android:layout_height="48dp"
+                            android:text="④ 보기4"
+                            android:textSize="14sp"
+                            android:textColor="#334155"
+                            android:background="@drawable/bg_choice_btn"
+                            android:backgroundTint="@null"
+                            android:gravity="center_vertical|start"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:stateListAnimator="@null"
+                            android:textAllCaps="false"/>
+
+                        <!-- PASS 버튼 -->
+                        <Button
+                            android:id="@+id/btn_pass"
+                            android:layout_width="match_parent"
+                            android:layout_height="52dp"
+                            android:text="🚫 PASS&#10;(-5초)"
+                            android:textSize="13sp"
+                            android:textStyle="bold"
+                            android:textColor="#FFFFFF"
+                            android:background="@drawable/bg_pass_btn_new"
+                            android:insetTop="0dp"
+                            android:insetBottom="0dp"
+                            android:stateListAnimator="@null"
+                            android:gravity="center"
+                            android:layout_marginTop="8dp"/>
+                    </LinearLayout>
 
                 </LinearLayout>
             </FrameLayout>
 
-            <!-- 프로그레스 닷 -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp">
-
-                <View android:layout_width="8dp" android:layout_height="8dp"
-                    android:background="#5211D4" android:layout_marginRight="4dp"/>
-                <View android:layout_width="8dp" android:layout_height="8dp"
-                    android:background="#E2E8F0" android:layout_marginRight="4dp"/>
-                <View android:layout_width="8dp" android:layout_height="8dp"
-                    android:background="#E2E8F0" android:layout_marginRight="4dp"/>
-                <View android:layout_width="8dp" android:layout_height="8dp"
-                    android:background="#E2E8F0" android:layout_marginRight="4dp"/>
-                <View android:layout_width="8dp" android:layout_height="8dp"
-                    android:background="#E2E8F0"/>
-            </LinearLayout>
-
-            <!-- 다시 도전 버튼 (게임 종료 시 표시) -->
+            <!-- 다시 도전 버튼 (결과 화면) -->
             <Button
                 android:id="@+id/btn_restart"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:text="⏱️ 다시 도전하기"
+                android:text="🔄 다시 도전하기"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
@@ -267,47 +288,4 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- 힌트 / PASS 버튼 (하단 고정) -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="16dp"
-        android:background="#F6F6F8">
-
-        <Button
-            android:id="@+id/btn_hint"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="52dp"
-            android:text="💡 힌트"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            android:textColor="#5211D4"
-            android:background="@drawable/bg_hint_btn_new"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:stateListAnimator="@null"
-            android:layout_marginRight="8dp"/>
-
-        <Button
-            android:id="@+id/btn_pass"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="52dp"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            android:textColor="#EA580C"
-            android:background="@drawable/bg_pass_btn_new"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:stateListAnimator="@null"
-            android:layout_marginLeft="8dp"
-            android:gravity="center"
-            android:text="🚫 PASS&#10;(-5초)"/>
-
-    </LinearLayout>
 </LinearLayout>

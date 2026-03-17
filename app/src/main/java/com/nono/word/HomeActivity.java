@@ -25,14 +25,17 @@ public class HomeActivity extends AppCompatActivity {
     // UI 변수
     private TextView tvBestScore, tvBest1Min, tvBest3Min;
     private View btnGroup1, btnGroup2, btnGroup3, btnRandomAll, btnChallenge1Min, btnChallenge3Min;
-    private View btnOnlyBookmark, btnTrash, btnRanking;
+    private View btnOnlyBookmark, btnTrash;
 
     // 탭 관련
     private TextView tabChoseong, tabLiteracy;
     private View containerChoseong, containerLiteracy;
     private View btnLiteracyRandom, btnLitVocab, btnLitSpelling, btnLitIdiom;
     private View btnLitReading, btnLitGrammar, btnLitPractical, btnLitTerms;
+    private View btnLiteracyChallenge1Min, btnLiteracyChallenge3Min;
     private NestedScrollView scrollView;
+
+    private boolean isChoseongTab = false; // 현재 탭: true = 초성, false = 문해력
 
     private WordRepository repository;
 
@@ -47,6 +50,9 @@ public class HomeActivity extends AppCompatActivity {
 
         initViews();
         setupListeners();
+
+        // 기본 탭을 문해력 테스트로 설정
+        switchTab(false);
 
         PlayGames.getGamesSignInClient(this).isAuthenticated().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult().isAuthenticated()) {
@@ -75,13 +81,16 @@ public class HomeActivity extends AppCompatActivity {
 
         btnOnlyBookmark = findViewById(R.id.btn_only_bookmark);
         btnTrash = findViewById(R.id.btn_trash);
-        btnRanking = findViewById(R.id.btn_ranking);
 
         // 탭 관련
         tabChoseong = findViewById(R.id.tab_choseong);
         tabLiteracy = findViewById(R.id.tab_literacy);
         containerChoseong = findViewById(R.id.container_choseong);
         containerLiteracy = findViewById(R.id.container_literacy);
+
+        // 문해력 챌린지 버튼
+        btnLiteracyChallenge1Min = findViewById(R.id.btn_literacy_challenge_1min);
+        btnLiteracyChallenge3Min = findViewById(R.id.btn_literacy_challenge_3min);
 
         // 문해력 테스트 카테고리 버튼
         btnLiteracyRandom = findViewById(R.id.btn_literacy_random);
@@ -111,11 +120,13 @@ public class HomeActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        btnRanking.setOnClickListener(v -> showLeaderboard());
-
         // 탭 전환
         tabChoseong.setOnClickListener(v -> switchTab(true));
         tabLiteracy.setOnClickListener(v -> switchTab(false));
+
+        // 문해력 챌린지
+        btnLiteracyChallenge1Min.setOnClickListener(v -> showLiteracyChallengeConfirmDialog(Constants.TIME_LIMIT_1MIN));
+        btnLiteracyChallenge3Min.setOnClickListener(v -> showLiteracyChallengeConfirmDialog(Constants.TIME_LIMIT_3MIN));
 
         // 문해력 테스트 탭
         btnLiteracyRandom.setOnClickListener(v -> startLiteracyActivity("all"));
@@ -129,6 +140,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void switchTab(boolean isChoseong) {
+        isChoseongTab = isChoseong;
         containerChoseong.setVisibility(isChoseong ? View.VISIBLE : View.GONE);
         containerLiteracy.setVisibility(isChoseong ? View.GONE : View.VISIBLE);
 
@@ -139,6 +151,7 @@ public class HomeActivity extends AppCompatActivity {
         tabLiteracy.setTextColor(isChoseong ? Color.parseColor("#94A3B8") : Color.WHITE);
 
         if (scrollView != null) scrollView.scrollTo(0, 0);
+        loadScores();
     }
 
     private void startLiteracyActivity(String category) {
@@ -195,8 +208,46 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    private void showLiteracyChallengeConfirmDialog(long timeLimit) {
+        Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_challenge_confirm);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setLayout(
+                (int) (getResources().getDisplayMetrics().widthPixels * 0.88),
+                android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+
+        android.widget.TextView tvMessage = dialog.findViewById(R.id.tv_dialog_message);
+        android.widget.TextView tvTitle = dialog.findViewById(R.id.tv_dialog_title);
+        android.widget.Button btnConfirm = dialog.findViewById(R.id.btn_dialog_confirm);
+
+        if (timeLimit == Constants.TIME_LIMIT_1MIN) {
+            tvTitle.setText("⚡ 1분 챌린지");
+            tvTitle.setTextColor(Color.parseColor("#FFB74D"));
+            btnConfirm.setBackgroundResource(R.drawable.bg_btn_dialog_confirm_orange);
+            tvMessage.setText("⏱️ 1분 안에 최대한 많이 맞춰보세요!\n\n정답 힌트 없이 진행되는 순수 실력 측정 모드예요. PASS는 -2초, 틀리면 -5초 패널티가 있으니 신중하게!\n\n도전할 준비가 되셨나요? 💪");
+        } else {
+            tvTitle.setText("🔥 3분 챌린지");
+            tvTitle.setTextColor(Color.parseColor("#FF6F61"));
+            btnConfirm.setBackgroundResource(R.drawable.bg_btn_dialog_confirm);
+            tvMessage.setText("🏆 3분 동안 실력을 마음껏 발휘해보세요!\n\n정답 힌트 없이 진행되며, 점수는 전 세계 리더보드에 기록돼요. PASS는 -2초, 틀리면 -5초 패널티!\n\n도전할 준비가 되셨나요? 🔥");
+        }
+
+        dialog.findViewById(R.id.btn_dialog_cancel).setOnClickListener(v -> dialog.dismiss());
+        dialog.findViewById(R.id.btn_dialog_confirm).setOnClickListener(v -> {
+            dialog.dismiss();
+            Intent intent = new Intent(HomeActivity.this, LiteracyChallengeActivity.class);
+            intent.putExtra("TIME_LIMIT", timeLimit);
+            startActivity(intent);
+        });
+
+        dialog.show();
+    }
+
     private void loadScores() {
-        tvBestScore.setText("연속 정답 기록 : " + repository.getBestStreak());
+        String mode = isChoseongTab ? "choseong" : "literacy";
+        tvBestScore.setText("연속 정답 기록 : " + repository.getBestStreak(mode));
         tvBest1Min.setText("Best: " + repository.getChallengeScore(Constants.TIME_LIMIT_1MIN));
         tvBest3Min.setText("Best: " + repository.getChallengeScore(Constants.TIME_LIMIT_3MIN));
     }
