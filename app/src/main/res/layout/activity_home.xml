@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -26,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:layout_marginTop="52dp"
+                android:layout_marginTop="72dp"
                 android:layout_marginBottom="20dp">
 
                 <LinearLayout
@@ -52,45 +53,43 @@
                         android:layout_marginTop="2dp"/>
                 </LinearLayout>
 
-                <!-- 연속 정답 배지 -->
+                <TextView
+                    android:id="@+id/btn_remove_ads"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="광고제거"
+                    android:textSize="10sp"
+                    android:textColor="#2563EB"
+                    android:layout_marginRight="10dp"/>
+
+                <!-- 랭킹 버튼 -->
                 <LinearLayout
+                    android:id="@+id/btn_ranking"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:background="@drawable/bg_streak_badge"
-                    android:paddingLeft="14dp"
+                    android:paddingLeft="12dp"
                     android:paddingRight="14dp"
                     android:paddingTop="8dp"
                     android:paddingBottom="8dp"
                     android:elevation="2dp">
 
                     <TextView
-                        android:id="@+id/tv_best_score"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="연속 정답 기록 : 0"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:textColor="#334155"/>
+                        android:text="🏆"
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="🔥"
-                        android:textSize="14sp"
-                        android:layout_marginLeft="4dp"/>
+                        android:text=" 리더보드"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:textColor="#334155"/>
                 </LinearLayout>
-
-                <!-- 랭킹 버튼 -->
-                <TextView
-                    android:id="@+id/btn_ranking"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🏆"
-                    android:textSize="24sp"
-                    android:layout_marginStart="10dp"
-                    android:padding="4dp"/>
             </LinearLayout>
 
             <!-- 탭 토글 바 -->
@@ -358,12 +357,42 @@
                     android:textColor="#5211D4"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="  초성 카테고리"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:textColor="#1E293B"/>
+
+                <!-- 초성 연속 정답 배지 -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_streak_badge"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    android:elevation="1dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="🔥"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_best_score_choseong"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=" 연속 정답 : 0"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#334155"/>
+                </LinearLayout>
             </LinearLayout>
 
             <!-- ㄱ~ㅁ -->
@@ -837,12 +866,42 @@
                         android:textColor="#5211D4"/>
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:text="  카테고리별 풀기"
                         android:textSize="15sp"
                         android:textStyle="bold"
                         android:textColor="#1E293B"/>
+
+                    <!-- 연속 정답 배지 -->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bg_streak_badge"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"
+                        android:elevation="1dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🔥"
+                            android:textSize="12sp"/>
+
+                        <TextView
+                            android:id="@+id/tv_best_score"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=" 연속 정답 : 0"
+                            android:textSize="11sp"
+                            android:textStyle="bold"
+                            android:textColor="#334155"/>
+                    </LinearLayout>
                 </LinearLayout>
 
                 <!-- 어휘·의미 -->
@@ -1300,7 +1359,82 @@
                         android:paddingBottom="4dp"/>
                 </LinearLayout>
 
+                <!-- 속담·관용어 -->
+                <LinearLayout
+                    android:id="@+id/btn_lit_proverb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:background="@drawable/bg_card_white"
+                    android:padding="14dp"
+                    android:layout_marginBottom="10dp"
+                    android:elevation="1dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="52dp"
+                        android:layout_height="52dp"
+                        android:gravity="center"
+                        android:background="@drawable/bg_category_icon_purple">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="🗣"
+                            android:textSize="20sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="속담·관용어"
+                            android:textSize="15sp"
+                            android:textStyle="bold"
+                            android:textColor="#1E293B"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="속담과 관용 표현"
+                            android:textSize="11sp"
+                            android:textColor="#94A3B8"
+                            android:layout_marginTop="2dp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="34문제"
+                        android:textSize="10sp"
+                        android:textStyle="bold"
+                        android:textColor="#5211D4"
+                        android:background="@drawable/bg_badge_purple"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingTop="4dp"
+                        android:paddingBottom="4dp"/>
+                </LinearLayout>
+
             </LinearLayout> <!-- container_literacy 닫기 -->
+
+            <!-- 하단 광고 (스크롤 내부) -->
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adViewHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-5497677824149260/4874446941"/>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

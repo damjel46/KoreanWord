@@ -17,22 +17,28 @@ import android.view.Window;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.widget.NestedScrollView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import com.google.android.gms.games.PlayGames;
 import com.google.android.gms.games.PlayGamesSdk;
 
 public class HomeActivity extends AppCompatActivity {
 
     // UI 변수
-    private TextView tvBestScore, tvBest1Min, tvBest3Min;
+    private TextView tvBestScore, tvBestScoreChoseong, tvBest1Min, tvBest3Min;
     private TextView tvBestLiteracy1Min, tvBestLiteracy3Min;
     private View btnGroup1, btnGroup2, btnGroup3, btnRandomAll, btnChallenge1Min, btnChallenge3Min;
     private View btnOnlyBookmark, btnTrash, btnRanking;
+    private TextView btnRemoveAds;
+    private AdView adViewHome;
+    private BillingManager billingManager;
 
     // 탭 관련
     private TextView tabChoseong, tabLiteracy;
     private View containerChoseong, containerLiteracy;
     private View btnLiteracyRandom, btnLitVocab, btnLitSpelling, btnLitIdiom;
-    private View btnLitReading, btnLitGrammar, btnLitPractical, btnLitTerms;
+    private View btnLitReading, btnLitGrammar, btnLitPractical, btnLitTerms, btnLitProverb;
     private View btnLiteracyChallenge1Min, btnLiteracyChallenge3Min;
     private NestedScrollView scrollView;
 
@@ -52,6 +58,16 @@ public class HomeActivity extends AppCompatActivity {
         initViews();
         setupListeners();
 
+        // 결제 매니저
+        billingManager = new BillingManager(this);
+        billingManager.setOnPurchaseListener(this::hideAllAds);
+
+        if (billingManager.isAdsRemoved()) {
+            hideAllAds();
+        } else {
+            adViewHome.loadAd(new AdRequest.Builder().build());
+        }
+
         // 기본 탭을 문해력 테스트로 설정
         switchTab(false);
 
@@ -70,6 +86,7 @@ public class HomeActivity extends AppCompatActivity {
 
     private void initViews() {
         tvBestScore = findViewById(R.id.tv_best_score);
+        tvBestScoreChoseong = findViewById(R.id.tv_best_score_choseong);
         tvBest1Min = findViewById(R.id.tv_best_1min);
         tvBest3Min = findViewById(R.id.tv_best_3min);
         btnChallenge1Min = findViewById(R.id.btn_challenge_1min);
@@ -105,8 +122,11 @@ public class HomeActivity extends AppCompatActivity {
         btnLitGrammar = findViewById(R.id.btn_lit_grammar);
         btnLitPractical = findViewById(R.id.btn_lit_practical);
         btnLitTerms = findViewById(R.id.btn_lit_terms);
+        btnLitProverb = findViewById(R.id.btn_lit_proverb);
 
         scrollView = findViewById(R.id.scrollView);
+        adViewHome = findViewById(R.id.adViewHome);
+        btnRemoveAds = findViewById(R.id.btn_remove_ads);
     }
 
     private void setupListeners() {
@@ -125,6 +145,7 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         btnRanking.setOnClickListener(v -> showLeaderboard());
+        btnRemoveAds.setOnClickListener(v -> billingManager.launchPurchase());
 
         // 탭 전환
         tabChoseong.setOnClickListener(v -> switchTab(true));
@@ -143,6 +164,7 @@ public class HomeActivity extends AppCompatActivity {
         btnLitGrammar.setOnClickListener(v -> startLiteracyActivity("문법"));
         btnLitPractical.setOnClickListener(v -> startLiteracyActivity("실생활"));
         btnLitTerms.setOnClickListener(v -> startLiteracyActivity("어휘·용어"));
+        btnLitProverb.setOnClickListener(v -> startLiteracyActivity("속담·관용어"));
     }
 
     private void switchTab(boolean isChoseong) {
@@ -246,8 +268,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void loadScores() {
-        String mode = isChoseongTab ? "choseong" : "literacy";
-        tvBestScore.setText("연속 정답 기록 : " + repository.getBestStreak(mode));
+        tvBestScoreChoseong.setText(" 연속 정답 : " + repository.getBestStreak("choseong"));
+        tvBestScore.setText(" 연속 정답 : " + repository.getBestStreak("literacy"));
 
         // 초성 탭 점수
         tvBest1Min.setText("Best: " + repository.getChallengeScore(Constants.TIME_LIMIT_1MIN));
@@ -256,6 +278,17 @@ public class HomeActivity extends AppCompatActivity {
         // 문해력 탭 점수
         tvBestLiteracy1Min.setText("Best: " + repository.getLiteracyChallengeBestScore(Constants.TIME_LIMIT_1MIN));
         tvBestLiteracy3Min.setText("Best: " + repository.getLiteracyChallengeBestScore(Constants.TIME_LIMIT_3MIN));
+    }
+
+    private void hideAllAds() {
+        if (adViewHome != null) adViewHome.setVisibility(View.GONE);
+        if (btnRemoveAds != null) btnRemoveAds.setVisibility(View.GONE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (billingManager != null) billingManager.destroy();
     }
 
     private void startMainActivity(int groupNumber, boolean isBookmarkMode) {

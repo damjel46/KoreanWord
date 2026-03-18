@@ -83,7 +83,11 @@ public class LiteracyQuizActivity extends AppCompatActivity {
         btnBack = findViewById(R.id.btn_back);
 
         adViewTop = findViewById(R.id.adViewTop);
-        adViewTop.loadAd(new AdRequest.Builder().build());
+        if (BillingManager.isAdsRemoved(this)) {
+            adViewTop.setVisibility(View.GONE);
+        } else {
+            adViewTop.loadAd(new AdRequest.Builder().build());
+        }
 
         choiceButtons = new Button[]{btnChoice1, btnChoice2, btnChoice3, btnChoice4};
 

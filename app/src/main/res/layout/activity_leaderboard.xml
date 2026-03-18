@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -11,7 +12,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="16dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="16dp"
+        android:paddingTop="48dp"
         android:background="#5211D4">
 
         <TextView
@@ -37,12 +41,14 @@
             android:layout_height="1dp"/>
     </LinearLayout>
 
-    <!-- 탭 전환 -->
+    <!-- 모드 탭 (문해력/초성) -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="12dp"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="12dp"
         android:gravity="center">
 
         <TextView
@@ -72,6 +78,44 @@
             android:layout_marginStart="4dp"/>
     </LinearLayout>
 
+    <!-- 시간 탭 (1분/3분) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tab_1min"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:text="1분"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#334155"
+            android:gravity="center"
+            android:background="#E8E8EC"
+            android:layout_marginEnd="4dp"/>
+
+        <TextView
+            android:id="@+id/tab_3min"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_weight="1"
+            android:text="3분"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#94A3B8"
+            android:gravity="center"
+            android:background="@android:color/transparent"
+            android:layout_marginStart="4dp"/>
+    </LinearLayout>
+
     <!-- 로딩 -->
     <ProgressBar
         android:id="@+id/progress_loading"
@@ -84,7 +128,8 @@
     <!-- 랭킹 리스트 -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:fillViewport="true">
 
         <LinearLayout
@@ -108,5 +153,55 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <!-- 내 기록 -->
+    <LinearLayout
+        android:id="@+id/layout_my_score"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="#5211D4"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="18dp"
+        android:paddingBottom="18dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="👤 내 기록"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_my_nickname"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="#E0D4F7"
+            android:textSize="17sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_my_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FFD54F"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <!-- 하단 광고 -->
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adViewBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-5497677824149260/4874446941"/>
 
 </LinearLayout>

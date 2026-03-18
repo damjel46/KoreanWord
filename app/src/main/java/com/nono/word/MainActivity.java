@@ -87,8 +87,12 @@ public class MainActivity extends AppCompatActivity {
                     Math.max(systemBars.bottom, ime.bottom));
             return insets;
         });
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adViewTop.loadAd(adRequest);
+        if (BillingManager.isAdsRemoved(this)) {
+            adViewTop.setVisibility(View.GONE);
+        } else {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adViewTop.loadAd(adRequest);
+        }
 
         // 5. 데이터 로딩 (CSV 읽기 & 필터링)
         readCsvFile();

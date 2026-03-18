@@ -81,6 +81,27 @@ public class FirebaseLeaderboard {
                 .addOnFailureListener(e -> listener.onLoaded(new ArrayList<>()));
     }
 
+    /** 내 점수 조회 */
+    public void getMyScore(String collection, OnMyScoreLoadedListener listener) {
+        ensureSignedIn(() -> {
+            String uid = auth.getCurrentUser().getUid();
+            db.collection(collection).document(uid).get()
+                    .addOnSuccessListener(doc -> {
+                        if (doc.exists() && doc.getString("nickname") != null && doc.getLong("score") != null) {
+                            listener.onLoaded(doc.getString("nickname"), doc.getLong("score").intValue());
+                        } else {
+                            listener.onLoaded(null, 0);
+                        }
+                    })
+                    .addOnFailureListener(e -> listener.onLoaded(null, 0));
+        });
+    }
+
+
+    public interface OnMyScoreLoadedListener {
+        void onLoaded(String nickname, int score);
+    }
+
     public interface OnResultListener {
         void onSuccess();
         void onFailure(String error);

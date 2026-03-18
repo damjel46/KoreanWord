@@ -138,7 +138,11 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
             startGame();
         });
 
-        adViewTop.loadAd(new AdRequest.Builder().build());
+        if (BillingManager.isAdsRemoved(this)) {
+            adViewTop.setVisibility(View.GONE);
+        } else {
+            adViewTop.loadAd(new AdRequest.Builder().build());
+        }
     }
 
     private void loadQuestions() {
@@ -149,6 +153,7 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
     private void startGame() {
         currentScore = 0;
         answered = false;
+        gameFinished = false;
         tvScore.setText("0점");
         tvFeedback.setText("");
         btnRestart.setVisibility(View.GONE);
@@ -261,9 +266,12 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
         if (selected == correct) {
             currentScore++;
             tvScore.setText(currentScore + "점");
+            choiceButtons[selected].setBackgroundResource(R.drawable.bg_choice_correct);
+            choiceButtons[selected].setBackgroundTintList(null);
+            choiceButtons[selected].setTextColor(Color.WHITE);
             tvFeedback.setText("정답! 🎉");
             tvFeedback.setTextColor(Color.parseColor("#16A34A"));
-            layoutCard.postDelayed(this::showQuestion, 800);
+            if (!gameFinished) layoutCard.postDelayed(this::showQuestion, 800);
         } else {
             choiceButtons[selected].setBackgroundResource(R.drawable.bg_choice_wrong);
             choiceButtons[selected].setBackgroundTintList(null);
@@ -271,7 +279,7 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
             tvFeedback.setText("오답! (-5초)");
             tvFeedback.setTextColor(Color.RED);
             applyPenalty(5000, "오답! (-5초)");
-            layoutCard.postDelayed(this::showQuestion, 1000);
+            if (!gameFinished) layoutCard.postDelayed(this::showQuestion, 1000);
         }
     }
 
@@ -284,7 +292,7 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
         tvFeedback.setTextColor(Color.RED);
 
         applyPenalty(2000, "PASS (-2초)");
-        layoutCard.postDelayed(this::showQuestion, 600);
+        if (!gameFinished) layoutCard.postDelayed(this::showQuestion, 600);
     }
 
     private void finishGame() {
@@ -357,7 +365,7 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
                 });
                 rewardedAd.show(LiteracyChallengeActivity.this, rewardItem -> {
                     leaderboard.submitScore(
-                            Constants.COLLECTION_LEADERBOARD_LITERACY,
+                            getLeaderboardCollection(),
                             nickname, currentScore,
                             new FirebaseLeaderboard.OnResultListener() {
                                 @Override
@@ -375,7 +383,7 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
                 });
             } else {
                 leaderboard.submitScore(
-                        Constants.COLLECTION_LEADERBOARD_LITERACY,
+                        getLeaderboardCollection(),
                         nickname, currentScore,
                         new FirebaseLeaderboard.OnResultListener() {
                             @Override
@@ -394,6 +402,12 @@ public class LiteracyChallengeActivity extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    private String getLeaderboardCollection() {
+        return timeLimit == Constants.TIME_LIMIT_1MIN
+                ? Constants.COLLECTION_LEADERBOARD_LITERACY_1MIN
+                : Constants.COLLECTION_LEADERBOARD_LITERACY_3MIN;
     }
 
     private void goToLeaderboard() {

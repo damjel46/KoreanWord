@@ -140,8 +140,12 @@ public class TimeAttackActivity extends AppCompatActivity {
             return false;
         });
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adViewTop.loadAd(adRequest);
+        if (BillingManager.isAdsRemoved(this)) {
+            adViewTop.setVisibility(View.GONE);
+        } else {
+            AdRequest adRequest = new AdRequest.Builder().build();
+            adViewTop.loadAd(adRequest);
+        }
     }
 
     private void readCsvFile() {
@@ -151,6 +155,7 @@ public class TimeAttackActivity extends AppCompatActivity {
 
     private void startGame() {
         currentScore = 0;
+        gameFinished = false;
         tvCurrentScore.setText("0점");
         tvFeedback.setText("");
 
@@ -251,25 +256,24 @@ public class TimeAttackActivity extends AppCompatActivity {
 
         if (userAnswer.equals(currentItem.getWord())) {
             // [정답]
-            if (!isHintUsed) {
-                currentScore++;
-                tvCurrentScore.setText(currentScore + "점");
-                tvFeedback.setText("정답! (+1점)");
-                tvFeedback.setTextColor(ContextCompat.getColor(this, R.color.feedback_success));
-            } else {
-                tvFeedback.setText("힌트 사용 (점수 없음)");
-                tvFeedback.setTextColor(Color.GRAY);
-            }
+            currentScore++;
+            tvCurrentScore.setText(currentScore + "점");
+            tvFeedback.setText("정답! (+1점)");
+            tvFeedback.setTextColor(ContextCompat.getColor(this, R.color.feedback_success));
 
             quizList.remove(currentItem);
+
+            // 카드 초록색으로 표시
+            layoutCard.setBackgroundResource(R.drawable.bg_quiz_card_correct);
 
             // 텍스트 초기화 방지하며 다음 문제 로드
             loadNextQuestion();
 
-            // 정답 메시지는 1초 뒤 사라짐
-            tvFeedback.postDelayed(() -> tvFeedback.setText(""), 1000);
-
-            layoutCard.setBackgroundResource(R.drawable.bg_quiz_card);
+            // 정답 메시지는 1초 뒤 사라짐 + 카드 원래 색으로
+            tvFeedback.postDelayed(() -> {
+                tvFeedback.setText("");
+                layoutCard.setBackgroundResource(R.drawable.bg_quiz_card);
+            }, 1000);
 
         } else {
             //  오답 시 패널티 (-5초)
@@ -356,7 +360,7 @@ public class TimeAttackActivity extends AppCompatActivity {
                 rewardedAd.show(TimeAttackActivity.this, rewardItem -> {
                     // 광고 시청 완료 → 등록
                     leaderboard.submitScore(
-                            Constants.COLLECTION_LEADERBOARD_CHOSEONG,
+                            getLeaderboardCollection(),
                             nickname, currentScore,
                             new FirebaseLeaderboard.OnResultListener() {
                                 @Override
@@ -375,7 +379,7 @@ public class TimeAttackActivity extends AppCompatActivity {
             } else {
                 // 광고 로드 실패 시 그냥 등록
                 leaderboard.submitScore(
-                        Constants.COLLECTION_LEADERBOARD_CHOSEONG,
+                        getLeaderboardCollection(),
                         nickname, currentScore,
                         new FirebaseLeaderboard.OnResultListener() {
                             @Override
@@ -394,6 +398,12 @@ public class TimeAttackActivity extends AppCompatActivity {
         });
 
         dialog.show();
+    }
+
+    private String getLeaderboardCollection() {
+        return timeLimit == Constants.TIME_LIMIT_1MIN
+                ? Constants.COLLECTION_LEADERBOARD_CHOSEONG_1MIN
+                : Constants.COLLECTION_LEADERBOARD_CHOSEONG_3MIN;
     }
 
     private void goToLeaderboard() {

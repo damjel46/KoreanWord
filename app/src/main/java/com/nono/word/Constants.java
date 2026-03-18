@@ -23,11 +23,17 @@ public final class Constants {
     static final String REWARDED_AD_ID = "ca-app-pub-5497677824149260/6804698298";
 
     // Firestore 컬렉션명
-    static final String COLLECTION_LEADERBOARD_CHOSEONG = "leaderboard_choseong";
-    static final String COLLECTION_LEADERBOARD_LITERACY = "leaderboard_literacy";
+    static final String COLLECTION_LEADERBOARD_CHOSEONG_1MIN = "leaderboard_choseong_1min";
+    static final String COLLECTION_LEADERBOARD_CHOSEONG_3MIN = "leaderboard_choseong_3min";
+    static final String COLLECTION_LEADERBOARD_LITERACY_1MIN = "leaderboard_literacy_1min";
+    static final String COLLECTION_LEADERBOARD_LITERACY_3MIN = "leaderboard_literacy_3min";
 
     // 문해력 테스트
     static final String KEY_LITERACY_BEST_SCORE = "literacyBestScore";
     static final String KEY_LITERACY_CHALLENGE_SCORE_PREFIX = "literacyChallengeBest_";
     static final int LITERACY_QUIZ_COUNT = 20;
+
+    // 인앱 결제
+    static final String PRODUCT_REMOVE_ADS = "remove_ads";
+    static final String KEY_ADS_REMOVED = "ads_removed";
 }
